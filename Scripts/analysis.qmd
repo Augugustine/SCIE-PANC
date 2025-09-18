@@ -18,6 +18,8 @@ library(DESeq2)
 library(tidyverse)
 library(biomaRt)
 library(ggfortify)
+library(pheatmap)
+library(multideconv)
 ```
 
 Download the data
@@ -65,6 +67,33 @@ dim(expr_matrix)
 head(expr_matrix)
 ```
 
+Add genes annotation and names
+
+```{r}
+ensembl <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
+
+mapping <- getBM(attributes = c("ensembl_gene_id", "hgnc_symbol"),
+                 filters = "ensembl_gene_id",
+                 values = expr_matrix$Genes,
+                 mart = ensembl)
+
+head(mapping)
+matrix_annot<-merge(mapping, expr_matrix, by.y="Genes", by.x="ensembl_gene_id")
+expr_matrix <- matrix_annot[, -1]
+#rownames(expr_matrix) <- expr_matrix$hgnc_symbol
+head(expr_matrix)
+dim(expr_matrix)
+```
+
+```{r}
+mapping <- AnnotationDbi::select(
+  org.Hs.eg.db,
+  keys = expr_matrix$Genes,
+  columns = "SYMBOL",
+  keytype = "ENSEMBL"
+)
+```
+
 Preprocessing: genes filtering
 
 1- Filtering based on genes where the total number of reads across all samples
@@ -82,15 +111,6 @@ expr_filtered <- expr_matrix_mat[keep, ]
 dim(expr_filtered) 
 ```
 
-Add genes annotation and names
-
-```{r}
-annotation <- read.csv("GRCh38.p14_annotation.txt", header = T, stringsAsFactors = F)
-head(annotation)
-matrix_annot<-merge(annotation, expr_matrix, by.y="Genes", by.x="Gene.stable.ID")
-head(matrix_annot)
-```
-
 ## Descriptive statistics
 
 ```{r}
@@ -100,13 +120,24 @@ summary(total_counts)
 
 hist(total_counts, breaks = 50, main = "Total counts per sample",
      xlab = "Total counts", col = "steelblue")
-boxplot(total_counts, main = "Total counts")
+boxplot(total_counts, main = "Total counts per sample")
 ```
 
 Normalization and scaling
 
 ```{r}
 vstcounts <- vst(expr_filtered)
+```
+
+Heatmap
+
+```{r}
+#top variable genes
+topN <- 300
+sel <- head(order(apply(vstcounts,1,sd), decreasing = TRUE), topN)
+mat_top <- vstcounts[sel, ]
+pheatmap(mat_top, scale = "row", show_rownames = TRUE, show_colnames = FALSE,
+         clustering_method = "complete", main="Heatmap of PDAC patients on top 300 genes")
 ```
 
 PCA
@@ -146,7 +177,21 @@ vstcounts.scale<-t(vstcounts.scale)
 vstcounts.dist=dist(vstcounts.scale)
 res.hclust<-hclust(vstcounts.dist)
 
+png("dendrogram.png", width=2000, height=1500, res=300)
 plot(res.hclust, main = "Cluster Dendrogram")
+
 ```
 
-# Deconvolution 
+# Deconvolution
+
+```{r}
+deconv = compute.deconvolution(expr_matrix, normalized = F, credentials.mail = "augustine.blancboekholt@etu.toulouse-inp.fr", credentials.token = "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", file_name = "Deconv_scie-panc") 
+```
+
+```{r}
+processed_deconvolution = compute.deconvolution.analysis(deconv, corr = 0.7, seed = 123, return = T, file_name="deconv_subsgroups")
+```
+
+ARACNe (normalised after vst) in
+
+Then Viper
