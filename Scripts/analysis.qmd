@@ -185,7 +185,7 @@ plot(res.hclust, main = "Cluster Dendrogram")
 # Deconvolution
 
 ```{r}
-deconv = compute.deconvolution(expr_matrix, normalized = F, credentials.mail = "augustine.blancboekholt@etu.toulouse-inp.fr", credentials.token = "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", file_name = "Deconv_scie-panc") 
+deconv = compute.deconvolution(expr_matrix, normalized = F, credentials.mail = "augustine.blancboekholt@etu.toulouse-inp.fr", credentials.token = "", file_name = "Deconv_scie-panc") 
 ```
 
 ```{r}
