@@ -20,6 +20,10 @@ library(biomaRt)
 library(ggfortify)
 library(pheatmap)
 library(multideconv)
+library(dplyr)
+library(stringr)
+library(minet)
+library(Rgraphviz)
 ```
 
 Download the data
@@ -121,6 +125,10 @@ expr_filtered <- expr_matrix_mat[keep, ]
 dim(expr_filtered) 
 ```
 
+```{r}
+saveRDS(expr_filtered, file = "expr_filtered.rds")
+```
+
 ## Descriptive statistics
 
 ```{r}
@@ -135,7 +143,11 @@ boxplot(total_counts, main = "Total counts per sample")
 Normalization and scaling
 
 ```{r}
-vstcounts <- vst(expr_filtered)
+vst_matrix <- vst(expr_filtered)
+```
+
+```{r}
+saveRDS(vst_matrix, file = "vst_matrix.rds")
 ```
 
 Heatmap
@@ -143,8 +155,8 @@ Heatmap
 ```{r}
 #top variable genes
 topN <- 300
-sel <- head(order(apply(vstcounts,1,sd), decreasing = TRUE), topN)
-mat_top <- vstcounts[sel, ]
+sel <- head(order(apply(vst_matrix,1,sd), decreasing = TRUE), topN)
+mat_top <- vst_matrix[sel, ]
 pheatmap(mat_top, scale = "row", show_rownames = FALSE, show_colnames = FALSE,
          clustering_method = "complete", main="Heatmap of PDAC patients on top 300 genes")
 ```
@@ -152,9 +164,9 @@ pheatmap(mat_top, scale = "row", show_rownames = FALSE, show_colnames = FALSE,
 PCA
 
 ```{r}
-pca_result <- prcomp(t(vstcounts), center = TRUE, scale. = FALSE)  
+pca_result <- prcomp(t(vst_matrix), center = TRUE, scale. = FALSE)  
 pca_data <- as.data.frame(pca_result$x)
-pca_data$PatientID <- colnames(vstcounts)
+pca_data$PatientID <- colnames(vst_matrix)
 ```
 
 ```{r}
@@ -183,16 +195,16 @@ ggplot(pca_data, aes(x = PC1, y = PC2)) +
 Hierarchical clustering
 
 ```{r}
-vstcounts.scale=scale(vstcounts)
-vstcounts.scale<-t(vstcounts.scale)
-vstcounts.dist=dist(vstcounts.scale)
-res.hclust<-hclust(vstcounts.dist)
+vst_matrix.scale=scale(vst_matrix)
+vst_matrix.scale<-t(vst_matrix.scale)
+vst_matrix.dist=dist(vst_matrix.scale)
+res.hclust<-hclust(vst_matrix.dist)
 
 png("dendrogram.png", width=2000, height=1500, res=300)
 plot(res.hclust, main = "Cluster Dendrogram")
 ```
 
-# Deconvolution
+## Deconvolution
 
 ```{r}
 #| message: false
@@ -212,23 +224,45 @@ processed_deconvolution = compute.deconvolution.analysis(deconv, corr = 0.7, see
 ```{r}
 results1<-read.table("Results/Cell_subgroups_deconv_subsgroups.csv", sep = ",", header=T)
 results<-read.table("Results/Deconvolution_after_subgrouping_deconv_subsgroups.csv", sep = ",", header=T)
+rownames(results) <- results$X
+results <- results[,-1]
 results3<-read.table("Results/Deconvolution_Deconv_scie-panc.csv", sep = ",", header=T)
-
-pheatmap(as.matrix(results[,-1]), cluster_rows=TRUE, cluster_cols=TRUE)
 ```
 
-ARACNe (normalised after vst) in
+## Gene regulatory network inference
+
+ARACNe (with package Minet)
 
 ```{r}
-# Calculer la matrice d'information mutuelle
-mim <- build.mim(expr_filtered, method="aracne", estimator = "spearman")
+# Calculate mutual information matrix and apply ARACNE algorithm
+network <- minet(t(vst_matrix), method="aracne")
 
-# Appliquer l'algorithme ARACNE
-network <- aracne(mim)
-
-# Visualiser le réseau (optionnel)
-library(Rgraphviz)
+# Vizualise the network
 plot(as(network, "graphNEL"))
 ```
 
-Then Viper
+Viper
+
+```{r}
+# Conversion the network in regulon
+regulon <- aracne2regulon(network, vst_matrix)
+
+# VIPER
+viper_activity <- viper(vst_matrix, regulon, verbose = FALSE)
+```
+
+```{r}
+pca <- prcomp(t(viper_activity), scale.=TRUE)
+pca_df <- data.frame(pca$x, Condition = your_conditions_vector)
+ggplot(pca_df, aes(x=PC1, y=PC2, color=Condition)) +
+  geom_point(size=3) +
+  theme_minimal()
+```
+
+```{r}
+var_genes <- head(order(apply(viper_activity, 1, var), decreasing=TRUE), 50)
+pheatmap(viper_activity[var_genes, ], scale="row",
+         show_rownames=TRUE, show_colnames=TRUE,
+         clustering_distance_rows="euclidean",
+         clustering_distance_cols="euclidean")
+```
