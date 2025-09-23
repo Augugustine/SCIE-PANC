@@ -231,14 +231,30 @@ results3<-read.table("Results/Deconvolution_Deconv_scie-panc.csv", sep = ",", he
 
 ## Gene regulatory network inference
 
-ARACNe (with package Minet)
+```{r}
+write.table(vst_matrix, file = "matrix_vst.txt", sep = "\t", quote = FALSE, row.names = TRUE, col.names = NA)
+```
+
+ARACNe (in Unix)
 
 ```{r}
 # Calculate mutual information matrix and apply ARACNE algorithm
 network <- minet(t(vst_matrix), method="aracne")
+```
 
-# Vizualise the network
-plot(as(network, "graphNEL"))
+```{bash}
+wget https://humantfs.ccbr.utoronto.ca/download/v_1.01/TF_names_v_1.01.txt
+for i in {1..100}
+do
+java -Xmx5G -jar /home/ablanc/work/scie-panc/ARACNe-AP/dist/aracne.jar -e matrix_vst.txt -o outputFolder --tfs TF_names_v_1.01.txt --pvalue 1E-8 --seed $i
+done
+
+java -Xmx5G -jar Aracne.jar -o outputFolder --consolidate
+```
+
+Vizualise the network
+
+```{plot(as(network, "graphNEL"))}
 ```
 
 Viper
