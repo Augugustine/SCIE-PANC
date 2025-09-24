@@ -22,8 +22,8 @@ library(pheatmap)
 library(multideconv)
 library(dplyr)
 library(stringr)
-library(minet)
-library(Rgraphviz)
+library(igraph)
+library(viper)
 ```
 
 Download the data
@@ -35,6 +35,13 @@ file_list <- list.files(path = params$root,
                         recursive = TRUE)
 
 length(file_list)
+```
+
+Clinical data
+
+```{r}
+clinical<-read.csv("clinical_data.csv")
+conversion_id<-read.csv("COMPASS_PSCI_ID.csv")
 ```
 
 Name the column by patient numero and genes column
@@ -157,8 +164,7 @@ Heatmap
 topN <- 300
 sel <- head(order(apply(vst_matrix,1,sd), decreasing = TRUE), topN)
 mat_top <- vst_matrix[sel, ]
-pheatmap(mat_top, scale = "row", show_rownames = FALSE, show_colnames = FALSE,
-         clustering_method = "complete", main="Heatmap of PDAC patients on top 300 genes")
+pheatmap(mat_top, scale = "row", show_rownames = FALSE, show_colnames = FALSE, annotation_col = clinical, clustering_method = "complete", main="Heatmap of PDAC patients on top 300 genes")
 ```
 
 PCA
@@ -167,6 +173,8 @@ PCA
 pca_result <- prcomp(t(vst_matrix), center = TRUE, scale. = FALSE)  
 pca_data <- as.data.frame(pca_result$x)
 pca_data$PatientID <- colnames(vst_matrix)
+pca_data$Sex <- clinical$Gender             # Add Sex information
+pca_data$Alive <- clinical$Alive.
 ```
 
 ```{r}
@@ -183,12 +191,13 @@ PC2=var_explained[2]
 PC1
 PC2
 
-ggplot(pca_data, aes(x = PC1, y = PC2)) +
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Sex, shape = Alive)) +
     geom_point(size = 3) +
-    labs(title = "PCA of SCIE-PANC Bulk RNA-seq Data",
+    labs(title = "PCA Bulk RNA-seq Data PDAC",
          x = "Principal Component 1 (8.33%)",
          y = "Principal Component 2 (4.46%)") +
     theme_minimal() +
+    scale_color_manual(values = c("F" = "blue", "M" = "red")) +
     theme(legend.position = "top")
 ```
 
@@ -229,6 +238,10 @@ results <- results[,-1]
 results3<-read.table("Results/Deconvolution_Deconv_scie-panc.csv", sep = ",", header=T)
 ```
 
+```{r}
+pheatmap(t(results), scale = "row", color = colorRampPalette(c("blue", "white", "red"))(100), breaks = seq(-4, 4, length.out = 101), show_rownames = TRUE, show_colnames = TRUE, clustering_method = "complete", main="Heatmap Deconvolution")
+```
+
 ## Gene regulatory network inference
 
 ```{r}
@@ -254,14 +267,30 @@ java -Xmx5G -jar Aracne.jar -o outputFolder --consolidate
 
 Vizualise the network
 
-```{plot(as(network, "graphNEL"))}
+```{r}
+network<-read.table("network.txt", header=TRUE)
+#network <- network[network$pvalue < 0.01, ]
+
+g <- graph_from_data_frame(d=network[, c("Regulator", "Target")], directed=TRUE)
+regulators <- unique(network$Regulator)
+V(g)$color <- ifelse(V(g)$name %in% regulators, "red", "lightblue") # color the regulators  in red and target in blue
+
+E(g)$weight <- network$MI
+
+plot(g,
+     vertex.size=20,
+     vertex.label.cex=0.8,
+     vertex.label.color="black",
+     edge.width=E(g)$weight*5,
+     edge.arrow.size=0.5,
+     main="ARACNE network for bulk data PADC")
 ```
 
 Viper
 
 ```{r}
 # Conversion the network in regulon
-regulon <- aracne2regulon(network, vst_matrix)
+regulon <- aracne2regulon("network.txt", vst_matrix)
 
 # VIPER
 viper_activity <- viper(vst_matrix, regulon, verbose = FALSE)
