@@ -42,6 +42,8 @@ Clinical data
 ```{r}
 clinical<-read.csv("clinical_data.csv")
 conversion_id<-read.csv("COMPASS_PSCI_ID.csv")
+clinical$Subject <- sub("^COMP", "COMP-", clinical$Subject)
+clinical<-merge(conversion_id, clinical, by.x="COMPASS.ID", by.y="Subject")
 ```
 
 Name the column by patient numero and genes column
@@ -76,6 +78,16 @@ expr_matrix <- expr_matrix[!expr_matrix$Genes %in% c("__alignment_not_unique",
                                                      "__too_low_aQual"), ]
 dim(expr_matrix)
 head(expr_matrix)
+```
+
+Keep only IDs common between RNA matrix and clinical data
+
+```{r}
+samples <- data.frame(PCSI.ID = colnames(expr_matrix))
+clinical<-merge(clinical, samples, by="PCSI.ID")
+
+samples <- intersect(colnames(expr_matrix), clinical$PCSI.ID)
+expr_matrix <- expr_matrix[, c("Genes", samples), drop = FALSE]
 ```
 
 Add genes annotation and names
@@ -154,7 +166,7 @@ vst_matrix <- vst(expr_filtered)
 ```
 
 ```{r}
-saveRDS(vst_matrix, file = "vst_matrix.rds")
+#saveRDS(vst_matrix, file = "vst_matrix.rds")
 ```
 
 Heatmap
@@ -164,7 +176,19 @@ Heatmap
 topN <- 300
 sel <- head(order(apply(vst_matrix,1,sd), decreasing = TRUE), topN)
 mat_top <- vst_matrix[sel, ]
-pheatmap(mat_top, scale = "row", show_rownames = FALSE, show_colnames = FALSE, annotation_col = clinical, clustering_method = "complete", main="Heatmap of PDAC patients on top 300 genes")
+annot<-clinical[,c("PCSI.ID","Metastatic.Disease.","Moffitt.latest", "kras_subtype","gHRD","Gender")]
+annot$gHRD <- ifelse(annot$gHRD %in% c("BRCA1(g)", "BRCA2(g)", "PALB2(g)"), 
+                               "yes", 
+                               annot$gHRD)
+rownames(annot) <- annot$PCSI.ID
+annot<-annot[,-1]
+
+my_colors <- list(
+  Gender = c(Female = "darkgreen", Male = "lightblue")
+)
+plot<-pheatmap(mat_top, scale = "row", show_rownames = FALSE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of PDAC patients on top 300 genes", annotation_colors = my_colors)
+
+ggsave("heatmap.jpeg", plot, width = 5000, height = 4000, units = "px")
 ```
 
 PCA
@@ -173,8 +197,14 @@ PCA
 pca_result <- prcomp(t(vst_matrix), center = TRUE, scale. = FALSE)  
 pca_data <- as.data.frame(pca_result$x)
 pca_data$PatientID <- colnames(vst_matrix)
-pca_data$Sex <- clinical$Gender             # Add Sex information
+pca_data$Sex <- clinical$Gender
 pca_data$Alive <- clinical$Alive.
+pca_data$kras_mut <- clinical$KRAS_mut 
+pca_data$kras_subtype <- clinical$kras_subtype
+pca_data$response <- clinical$Best.response.1st.line
+pca_data$Moffitt <- clinical$Moffitt.latest
+pca_data$Metastatic <- clinical$Metastatic.Disease.
+pca_data$Location <- clinical$Location.bx
 ```
 
 ```{r}
@@ -191,13 +221,68 @@ PC2=var_explained[2]
 PC1
 PC2
 
-ggplot(pca_data, aes(x = PC1, y = PC2, color = Sex, shape = Alive)) +
+ggplot(pca_data, aes(x = PC1, y = PC2, color = kras_subtype, shape = Sex)) +
     geom_point(size = 3) +
-    labs(title = "PCA Bulk RNA-seq Data PDAC",
+    labs(title = "PCA Bulk RNA-seq Data PDAC, KRAS subtype and Gender",
          x = "Principal Component 1 (8.33%)",
          y = "Principal Component 2 (4.46%)") +
     theme_minimal() +
-    scale_color_manual(values = c("F" = "blue", "M" = "red")) +
+    scale_color_manual(values = c("wt" = "blue", "minor" = "lightblue", "balanced"="yellow", "major"="red")) +
+    theme(legend.position = "top")
+```
+
+```{r}
+ggplot(pca_data, aes(x = PC1, y = PC2, color = kras_mut, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, KRAS mutation and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("G12C" = "blue", "G12D" = "pink", "G12R"="yellow", "G12V"="red", "G12S"="grey","G13D"="darkgrey","Q61H"="darkgreen","Q61K"="orange", "Q61L"="lightblue","Q61R"="black")) +
+    theme(legend.position = "top")
+```
+
+```{r}
+ggplot(pca_data, aes(x = PC1, y = PC2, color = response, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, Response and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("CR" = "blue", "SD" ="pink", "PD"="red", "NE"="grey","missing"="black", "PR"="lightblue")) +
+    theme(legend.position = "top")
+```
+
+```{r}
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Moffitt, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, Moffitt (basal-like or classical) and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("basal-like" = "blue", "classical"="red")) +
+    theme(legend.position = "top")
+```
+
+```{r}
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Metastatic, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, Metastatic desease and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("no" = "blue", "yes"="red")) +
+    theme(legend.position = "top")
+```
+
+```{r}
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Location, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, Location and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("Pancreas" = "blue", "Adrenal gland" = "pink", "Omentum"="yellow", "Liver"="red", "Lymph Node(s) Supraclav"="grey","Abdominal wall"="darkgreen","Peritoneum"="orange", "Lung"="lightblue","Ovary"="black")) +
     theme(legend.position = "top")
 ```
 
@@ -257,12 +342,16 @@ network <- minet(t(vst_matrix), method="aracne")
 
 ```{bash}
 wget https://humantfs.ccbr.utoronto.ca/download/v_1.01/TF_names_v_1.01.txt
+
+java -Xmx5G -jar ARACNe-AP/dist/aracne.jar -e matrix_vst.txt  -o outputFolder --tfs TF_list.txt --pvalue 1E-8 --seed 1 \
+--calculateThreshold
+
 for i in {1..100}
 do
-java -Xmx5G -jar /home/ablanc/work/scie-panc/ARACNe-AP/dist/aracne.jar -e matrix_vst.txt -o outputFolder --tfs TF_names_v_1.01.txt --pvalue 1E-8 --seed $i
+java -Xmx5G -jar ARACNe-AP/dist/aracne.jar -e matrix_vst.txt -o outputFolder --tfs TF_names_v_1.01.txt --pvalue 1E-8 --seed $i
 done
 
-java -Xmx5G -jar Aracne.jar -o outputFolder --consolidate
+java -Xmx5G -jar ARACNe-AP/dist/aracne.jar -o outputFolder --consolidate
 ```
 
 Vizualise the network
