@@ -24,6 +24,7 @@ library(dplyr)
 library(stringr)
 library(igraph)
 library(viper)
+library(ggraph)
 ```
 
 Download the data
@@ -186,7 +187,7 @@ annot<-annot[,-1]
 my_colors <- list(
   Gender = c(Female = "darkgreen", Male = "lightblue")
 )
-plot<-pheatmap(mat_top, scale = "row", show_rownames = FALSE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of PDAC patients on top 300 genes", annotation_colors = my_colors)
+plot<-pheatmap(mat_top, scale = "row", show_rownames = FALSE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of Top 300 Genes from RNA-seq Data", annotation_colors = my_colors)
 
 ggsave("heatmap.jpeg", plot, width = 5000, height = 4000, units = "px")
 ```
@@ -221,7 +222,7 @@ PC2=var_explained[2]
 PC1
 PC2
 
-ggplot(pca_data, aes(x = PC1, y = PC2, color = kras_subtype, shape = Sex)) +
+plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = kras_subtype, shape = Sex)) +
     geom_point(size = 3) +
     labs(title = "PCA Bulk RNA-seq Data PDAC, KRAS subtype and Gender",
          x = "Principal Component 1 (8.33%)",
@@ -229,6 +230,8 @@ ggplot(pca_data, aes(x = PC1, y = PC2, color = kras_subtype, shape = Sex)) +
     theme_minimal() +
     scale_color_manual(values = c("wt" = "blue", "minor" = "lightblue", "balanced"="yellow", "major"="red")) +
     theme(legend.position = "top")
+plot
+ggsave("pca_kras_subtype.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
@@ -243,7 +246,7 @@ ggplot(pca_data, aes(x = PC1, y = PC2, color = kras_mut, shape = Sex)) +
 ```
 
 ```{r}
-ggplot(pca_data, aes(x = PC1, y = PC2, color = response, shape = Sex)) +
+plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = response, shape = Sex)) +
     geom_point(size = 3) +
     labs(title = "PCA Bulk RNA-seq Data PDAC, Response and Gender",
          x = "Principal Component 1 (8.33%)",
@@ -251,10 +254,12 @@ ggplot(pca_data, aes(x = PC1, y = PC2, color = response, shape = Sex)) +
     theme_minimal() +
     scale_color_manual(values = c("CR" = "blue", "SD" ="pink", "PD"="red", "NE"="grey","missing"="black", "PR"="lightblue")) +
     theme(legend.position = "top")
+plot
+ggsave("pca_response.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
-ggplot(pca_data, aes(x = PC1, y = PC2, color = Moffitt, shape = Sex)) +
+plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = Moffitt, shape = Sex)) +
     geom_point(size = 3) +
     labs(title = "PCA Bulk RNA-seq Data PDAC, Moffitt (basal-like or classical) and Gender",
          x = "Principal Component 1 (8.33%)",
@@ -262,10 +267,12 @@ ggplot(pca_data, aes(x = PC1, y = PC2, color = Moffitt, shape = Sex)) +
     theme_minimal() +
     scale_color_manual(values = c("basal-like" = "blue", "classical"="red")) +
     theme(legend.position = "top")
+plot
+ggsave("pca_moffitt.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
-ggplot(pca_data, aes(x = PC1, y = PC2, color = Metastatic, shape = Sex)) +
+plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = Metastatic, shape = Sex)) +
     geom_point(size = 3) +
     labs(title = "PCA Bulk RNA-seq Data PDAC, Metastatic desease and Gender",
          x = "Principal Component 1 (8.33%)",
@@ -273,6 +280,8 @@ ggplot(pca_data, aes(x = PC1, y = PC2, color = Metastatic, shape = Sex)) +
     theme_minimal() +
     scale_color_manual(values = c("no" = "blue", "yes"="red")) +
     theme(legend.position = "top")
+plot
+ggsave("pca_metastases.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
@@ -358,21 +367,37 @@ Vizualise the network
 
 ```{r}
 network<-read.table("network.txt", header=TRUE)
-#network <- network[network$pvalue < 0.01, ]
+```
 
-g <- graph_from_data_frame(d=network[, c("Regulator", "Target")], directed=TRUE)
-regulators <- unique(network$Regulator)
-V(g)$color <- ifelse(V(g)$name %in% regulators, "red", "lightblue") # color the regulators  in red and target in blue
+```{r}
+top_edges <- network[order(network$MI, decreasing = TRUE), ][1:200, ]
+g <- graph_from_data_frame(d = top_edges[, c("Regulator", "Target")], directed = TRUE)
 
-E(g)$weight <- network$MI
+all_regulators <- unique(top_edges$Regulator)
+all_targets <- unique(top_edges$Target)
 
-plot(g,
-     vertex.size=20,
-     vertex.label.cex=0.8,
-     vertex.label.color="black",
-     edge.width=E(g)$weight*5,
-     edge.arrow.size=0.5,
-     main="ARACNE network for bulk data PADC")
+both_nodes <- intersect(all_regulators, all_targets)
+
+E(g)$MI <- top_edges$MI
+
+V(g)$type <- case_when(
+  V(g)$name %in% both_nodes ~ "Both",
+  V(g)$name %in% all_regulators ~ "Regulator",
+  V(g)$name %in% all_targets ~ "Target",
+  TRUE ~ "Other"
+)
+
+plot<-ggraph(g, layout = "fr") +
+  geom_edge_link0(aes(edge_width = MI), alpha = 0.6, edge_colour = "grey") +
+  geom_node_point(aes(color = type), size = 5, show.legend = TRUE) +
+  geom_node_text(aes(label = name), repel = TRUE, size = 3) +
+  scale_color_manual(values = c("Regulator" = "orange", "Target" = "blue", "Both" = "purple", "Other"= "grey")) +
+  scale_edge_width(name = "MI") +
+  guides(edge_width = guide_legend(override.aes = list(linetype = 1, shape = NA))) + 
+  theme_void() + ggtitle("ARACNE network for PADC data, orange = regulators, blue = targets and purple= both")
+plot
+
+ggsave("network.jpeg", plot, width = 5000, height = 4000, units = "px")
 ```
 
 Viper
@@ -386,17 +411,70 @@ viper_activity <- viper(vst_matrix, regulon, verbose = FALSE)
 ```
 
 ```{r}
-pca <- prcomp(t(viper_activity), scale.=TRUE)
-pca_df <- data.frame(pca$x, Condition = your_conditions_vector)
-ggplot(pca_df, aes(x=PC1, y=PC2, color=Condition)) +
-  geom_point(size=3) +
-  theme_minimal()
+samples <- intersect(colnames(viper_activity), clinical$PCSI.ID)
+viper_activity <- viper_activity[, samples, drop = FALSE]
+
+pca_viper <- prcomp(t(viper_activity), scale.=TRUE)
+
+pca_data <- as.data.frame(pca_viper$x)
+pca_data$PatientID <- colnames(vst_matrix)
+pca_data$Sex <- clinical$Gender
+pca_data$Alive <- clinical$Alive.
+pca_data$kras_mut <- clinical$KRAS_mut 
+pca_data$kras_subtype <- clinical$kras_subtype
+pca_data$response <- clinical$Best.response.1st.line
+pca_data$Moffitt <- clinical$Moffitt.latest
+pca_data$Metastatic <- clinical$Metastatic.Disease.
+pca_data$Location <- clinical$Location.bx
 ```
 
 ```{r}
-var_genes <- head(order(apply(viper_activity, 1, var), decreasing=TRUE), 50)
-pheatmap(viper_activity[var_genes, ], scale="row",
-         show_rownames=TRUE, show_colnames=TRUE,
-         clustering_distance_rows="euclidean",
-         clustering_distance_cols="euclidean")
+var_explained <- (pca_viper$sdev)^2 / sum(pca_viper$sdev^2)*100
+
+barplot(var_explained[1:50], main = "Explained Variance (%)",
+        xlab = "Principal Component", ylab = "Explained Variance (%) on the TF activity",names.arg = 1:50,
+        col = "skyblue")
+
+PC1=var_explained[1]
+PC2=var_explained[2]
+PC1
+PC2
+```
+
+```{r}
+pca_df <- data.frame(pca_viper$x, Condition = your_conditions_vector)
+ggplot(pca_viper, aes(x=PC1, y=PC2)) +
+  geom_point(size=3) +
+  theme_minimal()
+
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Location, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, Location and Gender",
+         x = "Principal Component 1 (24.3%)",
+         y = "Principal Component 2 (14.3%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("Pancreas" = "blue", "Adrenal gland" = "pink", "Omentum"="yellow", "Liver"="red", "Lymph Node(s) Supraclav"="grey","Abdominal wall"="darkgreen","Peritoneum"="orange", "Lung"="lightblue","Ovary"="black")) +
+    theme(legend.position = "top")
+```
+
+```{r}
+var_genes <- head(order(apply(viper_activity, 1, var), decreasing=TRUE), 100)
+
+my_colors <- list(
+  Gender = c(Female = "darkgreen", Male = "lightblue")
+)
+plot<-pheatmap(viper_activity[var_genes, ], scale = "row", show_rownames = TRUE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of Transcription Factor Activity on top 100", annotation_colors = my_colors)
+plot
+
+ggsave("heatmap_TF_top100.jpeg", plot, width = 5000, height = 4000, units = "px")
+```
+
+```{r}
+my_colors <- list(
+  Gender = c(Female = "darkgreen", Male = "lightblue")
+)
+plot<-pheatmap(viper_activity, scale = "row", show_rownames = FALSE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of Transcription Factor Activity", annotation_colors = my_colors)
+plot
+
+ggsave("heatmap_TF.jpeg", plot, width = 5000, height = 4000, units = "px")
 ```
