@@ -25,6 +25,8 @@ library(stringr)
 library(igraph)
 library(viper)
 library(ggraph)
+library(mixOmics)
+library(ggrepel)
 ```
 
 Download the data
@@ -45,6 +47,11 @@ clinical<-read.csv("clinical_data.csv")
 conversion_id<-read.csv("COMPASS_PSCI_ID.csv")
 clinical$Subject <- sub("^COMP", "COMP-", clinical$Subject)
 clinical<-merge(conversion_id, clinical, by.x="COMPASS.ID", by.y="Subject")
+clinical$Metastatic.Disease.<-tolower(clinical$Metastatic.Disease.)
+clinical$First.Tx.Backbone <- ifelse(clinical$First.Tx.Backbone == "GA "|clinical$First.Tx.Backbone == "GA  ", "GA", clinical$First.Tx.Backbone)
+clinical$First.Tx.Backbone <- ifelse(clinical$First.Tx.Backbone == "FFX ", "FFX", clinical$First.Tx.Backbone)
+clinical$First.Tx.Backbone <- ifelse(clinical$First.Tx.Backbone == "None", "none", clinical$First.Tx.Backbone)
+clinical$First.Tx.Backbone <- ifelse(clinical$First.Tx.Backbone == "cisplatin/gemcitabine", "cis/gem", clinical$First.Tx.Backbone)
 ```
 
 Name the column by patient numero and genes column
@@ -183,6 +190,8 @@ annot$gHRD <- ifelse(annot$gHRD %in% c("BRCA1(g)", "BRCA2(g)", "PALB2(g)"),
                                annot$gHRD)
 rownames(annot) <- annot$PCSI.ID
 annot<-annot[,-1]
+annot$Metastatic.Disease.<-tolower(annot$Metastatic.Disease.)
+
 
 my_colors <- list(
   Gender = c(Female = "darkgreen", Male = "lightblue")
@@ -205,7 +214,10 @@ pca_data$kras_subtype <- clinical$kras_subtype
 pca_data$response <- clinical$Best.response.1st.line
 pca_data$Moffitt <- clinical$Moffitt.latest
 pca_data$Metastatic <- clinical$Metastatic.Disease.
+pca_data$Metastatic<-tolower(pca_data$Metastatic)
 pca_data$Location <- clinical$Location.bx
+pca_data$surgey <- clinical$Priory.curative.surgey.for.PDAC
+pca_data$backbone <- clinical$First.Tx.Backbone
 ```
 
 ```{r}
@@ -285,7 +297,7 @@ ggsave("pca_metastases.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
-ggplot(pca_data, aes(x = PC1, y = PC2, color = Location, shape = Sex)) +
+plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = Location, shape = Sex)) +
     geom_point(size = 3) +
     labs(title = "PCA Bulk RNA-seq Data PDAC, Location and Gender",
          x = "Principal Component 1 (8.33%)",
@@ -293,6 +305,81 @@ ggplot(pca_data, aes(x = PC1, y = PC2, color = Location, shape = Sex)) +
     theme_minimal() +
     scale_color_manual(values = c("Pancreas" = "blue", "Adrenal gland" = "pink", "Omentum"="yellow", "Liver"="red", "Lymph Node(s) Supraclav"="grey","Abdominal wall"="darkgreen","Peritoneum"="orange", "Lung"="lightblue","Ovary"="black")) +
     theme(legend.position = "top")
+plot
+ggsave("pca_loc.jpeg", plot, width = 3000, height = 2000, units = "px")
+```
+
+```{r}
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Alive, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, Location and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("Alive" = "blue", "Dead"="red")) +
+    theme(legend.position = "top")
+
+
+ggplot(pca_data, aes(x = PC1, y = PC2, color = backbone, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, 1st backbone and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("cis/gem" = "blue", "FFX" = "pink", "Gemcitabine"="red", "none"="grey","GA-gem"="darkgreen","GA"="orange", "FFX+5FU"="lightblue","FFX+olaparib"="black")) +
+    theme(legend.position = "top")
+```
+
+PLS-DA
+
+```{r}
+clini<-clinical[,c("PCSI.ID","Metastatic.Disease.","Moffitt.latest", "kras_subtype","gHRD","Gender","Best.response.1st.line","Location.bx","Priory.curative.surgey.for.PDAC")]
+clini$gHRD <- ifelse(clini$gHRD %in% c("BRCA1(g)", "BRCA2(g)", "PALB2(g)"), 
+                               "yes", 
+                               clini$gHRD)
+rownames(clini) <- clini$PCSI.ID
+clini<-clini[,-1]
+clini$Metastatic.Disease.<-tolower(clini$Metastatic.Disease.)
+```
+
+```{r}
+X <- t(vst_matrix)
+Y <- clini$Moffitt.latest
+result.plsda<- plsda(X, Y)
+plotIndiv(result.plsda, legend = TRUE, ind.names = FALSE,
+  title = "PLS-DA on bulk data in PDAC, Moffitt")
+
+Y <- clini$kras_subtype
+result.plsda<- plsda(X, Y)
+plotIndiv(result.plsda, legend = TRUE, ind.names = FALSE,
+  title = "PLS-DA on bulk data in PDAC, KRAS subtype")
+
+Y <- clini$Gender
+result.plsda<- plsda(X, Y)
+plotIndiv(result.plsda, legend = TRUE, ind.names = FALSE,
+  title = "PLS-DA on bulk data in PDAC, Gender")
+
+Y <- clini$gHRD
+result.plsda<- plsda(X, Y)
+plotIndiv(result.plsda, legend = TRUE, ind.names = FALSE,
+  title = "PLS-DA on bulk data in PDAC, gHRD")
+
+Y <- clini$Location.bx
+result.plsda<- plsda(X, Y)
+plotIndiv(result.plsda, legend = TRUE, ind.names = FALSE,
+  title = "PLS-DA on bulk data in PDAC, Location")
+
+Y <- clini$Best.response.1st.line
+result.plsda<- plsda(X, Y)
+plotIndiv(result.plsda, legend = TRUE, ind.names = FALSE,
+  title = "PLS-DA on bulk data in PDAC, Response")
+```
+
+```{r}
+Y <- clini$Metastatic.Disease.
+result.plsda<- plsda(X, Y)
+plotIndiv(result.plsda, legend = TRUE, ind.names = FALSE,
+  title = "PLS-DA on bulk data in PDAC, Metastatic disease")
 ```
 
 Hierarchical clustering
@@ -333,7 +420,9 @@ results3<-read.table("Results/Deconvolution_Deconv_scie-panc.csv", sep = ",", he
 ```
 
 ```{r}
-pheatmap(t(results), scale = "row", color = colorRampPalette(c("blue", "white", "red"))(100), breaks = seq(-4, 4, length.out = 101), show_rownames = TRUE, show_colnames = TRUE, clustering_method = "complete", main="Heatmap Deconvolution")
+plot<-pheatmap(t(results), scale = "row", color = colorRampPalette(c("blue", "white", "red"))(100), breaks = seq(-4, 4, length.out = 101), show_rownames = TRUE, show_colnames = FALSE, clustering_method = "complete", main="Heatmap Deconvolution", annotation_col = annot)
+plot
+ggsave("deconv.jpeg", plot, width = 6000, height = 4000, units = "px")
 ```
 
 ## Gene regulatory network inference
@@ -343,11 +432,6 @@ write.table(vst_matrix, file = "matrix_vst.txt", sep = "\t", quote = FALSE, row.
 ```
 
 ARACNe (in Unix)
-
-```{r}
-# Calculate mutual information matrix and apply ARACNE algorithm
-network <- minet(t(vst_matrix), method="aracne")
-```
 
 ```{bash}
 wget https://humantfs.ccbr.utoronto.ca/download/v_1.01/TF_names_v_1.01.txt
@@ -400,6 +484,8 @@ plot
 ggsave("network.jpeg", plot, width = 5000, height = 4000, units = "px")
 ```
 
+## Proteins activity inference
+
 Viper
 
 ```{r}
@@ -416,23 +502,24 @@ viper_activity <- viper_activity[, samples, drop = FALSE]
 
 pca_viper <- prcomp(t(viper_activity), scale.=TRUE)
 
-pca_data <- as.data.frame(pca_viper$x)
-pca_data$PatientID <- colnames(vst_matrix)
-pca_data$Sex <- clinical$Gender
-pca_data$Alive <- clinical$Alive.
-pca_data$kras_mut <- clinical$KRAS_mut 
-pca_data$kras_subtype <- clinical$kras_subtype
-pca_data$response <- clinical$Best.response.1st.line
-pca_data$Moffitt <- clinical$Moffitt.latest
-pca_data$Metastatic <- clinical$Metastatic.Disease.
-pca_data$Location <- clinical$Location.bx
+pca_prot <- as.data.frame(pca_viper$x)
+pca_prot$PatientID <- colnames(vst_matrix)
+pca_prot$Sex <- clinical$Gender
+pca_prot$Alive <- clinical$Alive.
+pca_prot$kras_mut <- clinical$KRAS_mut 
+pca_prot$kras_subtype <- clinical$kras_subtype
+pca_prot$response <- clinical$Best.response.1st.line
+pca_prot$Moffitt <- clinical$Moffitt.latest
+pca_prot$Metastatic <- clinical$Metastatic.Disease.
+pca_prot$Location <- clinical$Location.bx
+pca_prot$gHRD <- clinical$gHRD
 ```
 
 ```{r}
 var_explained <- (pca_viper$sdev)^2 / sum(pca_viper$sdev^2)*100
 
 barplot(var_explained[1:50], main = "Explained Variance (%)",
-        xlab = "Principal Component", ylab = "Explained Variance (%) on the TF activity",names.arg = 1:50,
+        xlab = "Principal Component", ylab = "Explained Variance (%) on the proteins activity",names.arg = 1:50,
         col = "skyblue")
 
 PC1=var_explained[1]
@@ -442,20 +529,32 @@ PC2
 ```
 
 ```{r}
-pca_df <- data.frame(pca_viper$x, Condition = your_conditions_vector)
-ggplot(pca_viper, aes(x=PC1, y=PC2)) +
-  geom_point(size=3) +
-  theme_minimal()
-
-ggplot(pca_data, aes(x = PC1, y = PC2, color = Location, shape = Sex)) +
+plot<-ggplot(pca_prot, aes(x = PC1, y = PC2, color = Metastatic, shape = Moffitt)) +
     geom_point(size = 3) +
-    labs(title = "PCA Bulk RNA-seq Data PDAC, Location and Gender",
+    labs(title = "PCA proteins activity, Metastatic disease and Moffitt",
          x = "Principal Component 1 (24.3%)",
          y = "Principal Component 2 (14.3%)") +
     theme_minimal() +
-    scale_color_manual(values = c("Pancreas" = "blue", "Adrenal gland" = "pink", "Omentum"="yellow", "Liver"="red", "Lymph Node(s) Supraclav"="grey","Abdominal wall"="darkgreen","Peritoneum"="orange", "Lung"="lightblue","Ovary"="black")) +
+    scale_color_manual(values = c("no" = "blue", "yes"="red")) +
     theme(legend.position = "top")
+plot
+ggsave("pca_prot_metaxmoffitt.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
+
+```{r}
+plot<-ggplot(pca_prot, aes(x = PC1, y = PC2, color = gHRD, shape = Moffitt)) +
+    geom_point(size = 3) +
+    labs(title = "PCA proteins activity, gHRD and Moffitt",
+         x = "Principal Component 1 (24.3%)",
+         y = "Principal Component 2 (14.3%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("no" = "blue", "yes"="red")) +
+    theme(legend.position = "top")
+plot
+ggsave("pca_prot_metaxmoffitt.jpeg", plot, width = 3000, height = 2000, units = "px")
+```
+
+Heatmap
 
 ```{r}
 var_genes <- head(order(apply(viper_activity, 1, var), decreasing=TRUE), 100)
@@ -463,7 +562,7 @@ var_genes <- head(order(apply(viper_activity, 1, var), decreasing=TRUE), 100)
 my_colors <- list(
   Gender = c(Female = "darkgreen", Male = "lightblue")
 )
-plot<-pheatmap(viper_activity[var_genes, ], scale = "row", show_rownames = TRUE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of Transcription Factor Activity on top 100", annotation_colors = my_colors)
+plot<-pheatmap(viper_activity[var_genes, ], scale = "row", show_rownames = TRUE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of proteins activity on top 100", annotation_colors = my_colors)
 plot
 
 ggsave("heatmap_TF_top100.jpeg", plot, width = 5000, height = 4000, units = "px")
@@ -473,8 +572,61 @@ ggsave("heatmap_TF_top100.jpeg", plot, width = 5000, height = 4000, units = "px"
 my_colors <- list(
   Gender = c(Female = "darkgreen", Male = "lightblue")
 )
-plot<-pheatmap(viper_activity, scale = "row", show_rownames = FALSE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of Transcription Factor Activity", annotation_colors = my_colors)
+plot<-pheatmap(viper_activity, scale = "row", show_rownames = FALSE, show_colnames = FALSE, annotation_col = annot, clustering_method = "complete", main="Heatmap of proteins activity", annotation_colors = my_colors)
 plot
 
 ggsave("heatmap_TF.jpeg", plot, width = 5000, height = 4000, units = "px")
+```
+
+## Differential genes expression
+
+```{r}
+dds <- DESeqDataSetFromMatrix(
+  countData = expr_filtered,
+  colData = clinical,
+  design = ~ Moffitt.latest
+)
+```
+
+```{r}
+dds <- DESeq(dds)
+res <- results(dds, contrast=c("Moffitt.latest", "basal-like", "classical"))
+res <- lfcShrink(dds, coef="Moffitt.latest_classical_vs_basal.like", type="apeglm")
+res <- as.data.frame(res)
+res$FDR <- p.adjust(res$pvalue, method="BH")
+```
+
+```{r}
+res$Significant <- "No"
+res$Significant[res$FDR < 0.05 & res$log2FoldChange > 1] <- "Up"
+res$Significant[res$FDR < 0.05 & res$log2FoldChange < -1] <- "Down"
+#top_genes <- res[order(res$padj), ][1:20, ]
+#top_genes$gene<-rownames(top_genes)
+res$gene <- rownames(res)
+res_up   <- res[res$log2FoldChange > 0, ]
+res_down <- res[res$log2FoldChange < 0, ]
+top_up   <- head(res_up[order(res_up$padj), ], 20)
+top_down <- head(res_down[order(res_down$padj), ], 20)
+top_genes <- rbind(top_up, top_down)
+
+plot<-ggplot(res, aes(x=log2FoldChange, y=-log10(FDR), color=Significant)) +
+  geom_point(alpha=0.5) +
+  scale_color_manual(values=c("darkblue","grey","red")) +
+    geom_text_repel(data = top_genes, aes(label = gene), box.padding = 0.5, max.overlaps = Inf, size = 3) +
+  theme_minimal() +
+  xlab("Log2 Fold Change") +
+  ylab("-Log10 FDR") +
+  ggtitle("Volcano Plot basal-like vs classical subtype")
+plot
+ggsave("Plots/volcano_moffitt.jpeg", plot, width = 4000, height = 3000, units = "px")
+```
+
+Metastic disease
+
+```{r}
+dds <- DESeq(dds)
+res <- results(dds, contrast=c("Metastatic.Disease.", "yes", "no"))
+res <- lfcShrink(dds, coef="Moffitt.latest_classical_vs_basal.like", type="apeglm")
+res <- as.data.frame(res)
+res$FDR <- p.adjust(res$pvalue, method="BH")
 ```
