@@ -27,6 +27,8 @@ library(viper)
 library(ggraph)
 library(mixOmics)
 library(ggrepel)
+library(clusterProfiler)
+source("functions.R")
 ```
 
 Download the data
@@ -412,17 +414,63 @@ processed_deconvolution = compute.deconvolution.analysis(deconv, corr = 0.7, see
 ```
 
 ```{r}
-results1<-read.table("Results/Cell_subgroups_deconv_subsgroups.csv", sep = ",", header=T)
 results<-read.table("Results/Deconvolution_after_subgrouping_deconv_subsgroups.csv", sep = ",", header=T)
 rownames(results) <- results$X
 results <- results[,-1]
-results3<-read.table("Results/Deconvolution_Deconv_scie-panc.csv", sep = ",", header=T)
+results<-results[rownames(results) %in% clinical$PCSI.ID,]
 ```
 
 ```{r}
 plot<-pheatmap(t(results), scale = "row", color = colorRampPalette(c("blue", "white", "red"))(100), breaks = seq(-4, 4, length.out = 101), show_rownames = TRUE, show_colnames = FALSE, clustering_method = "complete", main="Heatmap Deconvolution", annotation_col = annot)
 plot
 ggsave("deconv.jpeg", plot, width = 6000, height = 4000, units = "px")
+```
+
+```{r}
+clinical.data<-clinical
+rownames(clinical.data)<-clinical.data$PCSI.ID
+clinical.data<-clinical.data[,c(-1,-2)]
+deconv.metadata<-compute.metada.association(results,clinical.data, width = 12, height = 30)
+```
+
+PCA
+
+```{r}
+pca_results <- prcomp(results, scale.=TRUE)
+
+pca_deconv <- as.data.frame(pca_results$x)
+pca_deconv$PatientID <- colnames(vst_matrix)
+pca_deconv$Sex <- clinical$Gender
+pca_deconv$Alive <- clinical$Alive.
+pca_deconv$kras_mut <- clinical$KRAS_mut 
+pca_deconv$kras_subtype <- clinical$kras_subtype
+pca_deconv$response <- clinical$Best.response.1st.line
+pca_deconv$Moffitt <- clinical$Moffitt.latest
+pca_deconv$Metastatic <- clinical$Metastatic.Disease.
+pca_deconv$Location <- clinical$Location.bx
+pca_deconv$gHRD <- clinical$gHRD
+```
+
+```{r}
+var_explained <- (pca_results$sdev)^2 / sum(pca_results$sdev^2)*100
+
+barplot(var_explained[1:50], main = "Explained Variance (%)",
+        xlab = "Principal Component", ylab = "Explained Variance (%) on the deconvolution features",names.arg = 1:50,
+        col = "skyblue")
+
+PC1=var_explained[1]
+PC2=var_explained[2]
+PC1
+PC2
+
+ggplot(pca_deconv, aes(x = PC1, y = PC2, color = Metastatic, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA on deconvolution features, Location and Gender",
+         x = "Principal Component 1 (11.25%)",
+         y = "Principal Component 2 (8.19%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("yes" = "blue", "no"="red")) +
+    theme(legend.position = "top")
 ```
 
 ## Gene regulatory network inference
@@ -619,6 +667,17 @@ plot<-ggplot(res, aes(x=log2FoldChange, y=-log10(FDR), color=Significant)) +
   ggtitle("Volcano Plot basal-like vs classical subtype")
 plot
 ggsave("Plots/volcano_moffitt.jpeg", plot, width = 4000, height = 3000, units = "px")
+```
+
+GO
+
+```{r}
+genes<-rownames(res[res$log2FoldChange>0.5,])
+Go_results<-enrichGO(gene=genes, OrgDb="org.Hs.eg.db", keyType= "SYMBOL", ont="BP")
+as.data.frame(Go_results)
+plot<-plot(barplot(Go_results, showCategory=20))+ggtitle("GO Enrichment Analysis of basal-like vs classical subtype")
+plot
+ggsave("Plots/GO.jpeg", plot, width = 4000, height = 3000, units = "px")
 ```
 
 Metastic disease
