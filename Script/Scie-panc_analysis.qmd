@@ -454,6 +454,28 @@ plot
 ggsave("Plots/deconv_corr.jpeg", plot, width = 8000, height = 3000, units = "px")
 ```
 
+```{r}
+mat_filled <- t(deconv.metadata)
+mat_filled[is.na(mat_filled)] <- 0  
+
+# Clustering (rows)
+dist_rows <- dist(mat_filled)  
+clust_rows <- hclust(dist_rows, method = "ward.D2")
+
+# Clustering (columns)
+dist_cols <- dist(t(mat_filled))
+clust_cols <- hclust(dist_cols, method = "ward.D2")
+
+# Heatmap with dendrogrammes
+plot<-pheatmap(t(deconv.metadata), 
+         cluster_rows = clust_rows,
+         cluster_cols = clust_cols,
+         color = colorRampPalette(c("blue","white","red"))(100),
+         na_col = "grey90", angle_col = "315", main="Clinical associations with cell types only showing significant associations (pvalue < 0.05)")
+plot
+ggsave("Plots/deconv_corr.jpeg", plot, width = 8000, height = 3000, units = "px")
+```
+
 PCA
 
 ```{r}
@@ -507,8 +529,9 @@ cluster<-as.data.frame(cluster)
 
 clinical.data$ID <- rownames(clinical.data)
 cluster$ID <- rownames(cluster)
-merged <- merge(clinical.data, cluster, by = "ID")
-merge(clinical.data, cluster)
+clinical.data <- merge(clinical.data, cluster, by = "ID")
+rownames(clinical.data)<-clinical.data$ID
+clinical.data<-clinical.data[,-1]
 ```
 
 ANOVA for continuous variables and Chi2 for qualitative variables
