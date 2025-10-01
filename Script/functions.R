@@ -126,6 +126,8 @@ compute.metada.association = function(deconv.results, coldata, pval = 0.05, widt
       textMatrix[i] = NA
     }
     
+    moduleTraitCor_sig <- moduleTraitCor
+    moduleTraitCor_sig[moduleTraitPvalue > pval] <- NA
     
     pdf("Results/deconv_metadata", width = width, height = height)
     par(mar = c(25, 15, 3, 3))
@@ -141,7 +143,7 @@ compute.metada.association = function(deconv.results, coldata, pval = 0.05, widt
                           zlim = c(-1,1),
                           main = paste0("Clinical associations with cell types\nOnly showing significant associations (pvalue < ", pval, ")"))
     dev.off()
-    return(moduleTraitCor)
+    return(moduleTraitCor_sig)
   }
   
 }

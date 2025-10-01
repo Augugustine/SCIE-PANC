@@ -433,6 +433,27 @@ clinical.data<-clinical.data[,c(-1,-2)]
 deconv.metadata<-compute.metada.association(results,clinical.data, width = 12, height = 30)
 ```
 
+```{r}
+plot_mat <- t(deconv.metadata)
+df_long <- melt(plot_mat, varnames = c("Clinical", "Celltype"), value.name = "Correlation")
+
+# Heatmap ggplot
+plot<-ggplot(df_long, aes(x = Celltype, y = Clinical, fill = Correlation)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", 
+                       na.value = "grey80",  # NA in grey
+                       midpoint = 0, limits = c(-1,1)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  labs(title = "Clinical associations with cell types\nOnly showing significant associations (pvalue < 0.05)",
+       x = "Cell types proportion", y = "Clinical data", fill = "Corr")
+plot
+
+ggsave("Plots/deconv_corr.jpeg", plot, width = 8000, height = 3000, units = "px")
+```
+
 PCA
 
 ```{r}
@@ -449,6 +470,8 @@ pca_deconv$Moffitt <- clinical$Moffitt.latest
 pca_deconv$Metastatic <- clinical$Metastatic.Disease.
 pca_deconv$Location <- clinical$Location.bx
 pca_deconv$gHRD <- clinical$gHRD
+pca_deconv$ECOG <- clinical$ECOG
+pca_deconv$ECOG <- as.character(pca_deconv$ECOG)
 ```
 
 ```{r}
@@ -463,14 +486,35 @@ PC2=var_explained[2]
 PC1
 PC2
 
-ggplot(pca_deconv, aes(x = PC1, y = PC2, color = Metastatic, shape = Sex)) +
+ggplot(pca_deconv, aes(x = PC1, y = PC2, color = ECOG, shape = Sex)) +
     geom_point(size = 3) +
-    labs(title = "PCA on deconvolution features, Location and Gender",
+    labs(title = "PCA on deconvolution features, ECOG and Gender",
          x = "Principal Component 1 (11.25%)",
          y = "Principal Component 2 (8.19%)") +
     theme_minimal() +
-    scale_color_manual(values = c("yes" = "blue", "no"="red")) +
+    scale_color_manual(values = c("0" = "blue", "1" = "red")) +
     theme(legend.position = "top")
+```
+
+Clusters related to clinical data
+
+3 clusters based on deconvolution results
+
+```{r}
+cluster_kmeans<-kmeans(results, centers=3)
+cluster<-cluster_kmeans$cluster
+cluster<-as.data.frame(cluster)
+
+clinical.data$ID <- rownames(clinical.data)
+cluster$ID <- rownames(cluster)
+merged <- merge(clinical.data, cluster, by = "ID")
+merge(clinical.data, cluster)
+```
+
+ANOVA for continuous variables and Chi2 for qualitative variables
+
+```{r}
+
 ```
 
 ## Gene regulatory network inference
