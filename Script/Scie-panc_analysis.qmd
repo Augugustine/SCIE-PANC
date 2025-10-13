@@ -28,6 +28,9 @@ library(ggraph)
 library(mixOmics)
 library(ggrepel)
 library(clusterProfiler)
+devtools::load_all("~/Documents/SCIE-PANC/CellTFusion-main")
+library(OmnipathR)
+library(caret)
 source("functions.R")
 ```
 
@@ -399,8 +402,7 @@ plot(res.hclust, main = "Cluster Dendrogram")
 ## Deconvolution
 
 ```{r}
-#| message: false
-#| warning: false
+#| include: false
 deconv = compute.deconvolution(raw.counts = expr_filtered, 
                                methods = c("Quantiseq", "Epidish", 
                                            "DeconRNASeq", "DWLS","MOMF"), 
@@ -414,7 +416,7 @@ processed_deconvolution = compute.deconvolution.analysis(deconv, corr = 0.7, see
 ```
 
 ```{r}
-results<-read.table("Results/Deconvolution_after_subgrouping_deconv_subsgroups.csv", sep = ",", header=T)
+results<-read.table("Results_multideconv/Deconvolution_after_subgrouping_deconv_subsgroups.csv", sep = ",", header=T)
 rownames(results) <- results$X
 results <- results[,-1]
 results<-results[rownames(results) %in% clinical$PCSI.ID,]
@@ -755,4 +757,47 @@ res <- results(dds, contrast=c("Metastatic.Disease.", "yes", "no"))
 res <- lfcShrink(dds, coef="Moffitt.latest_classical_vs_basal.like", type="apeglm")
 res <- as.data.frame(res)
 res$FDR <- p.adjust(res$pvalue, method="BH")
+```
+
+## CellTFusion 
+
+```{r}
+#| include: false
+clinical.data<-clinical
+rownames(clinical.data)<-clinical.data$PCSI.ID
+clinical.data<-clinical.data[,c(-1,-2)]
+
+res <- CellTFusion(
+  raw.counts = expr_filtered,
+  normalized = TRUE,
+  coldata = clinical.data, 
+  deconv_methods = c("Quantiseq", "Epidish", "DeconRNASeq", "DWLS"), 
+  file_name = "Scie-panc",
+  corr = 0.7,
+  pval = 0.05,
+  high_corr_groups = 0.85,
+  return = FALSE
+)
+```
+
+```{r}
+# We first normalize by log2(TPM + 1)
+counts.norm = data.frame(ADImpute::NormalizeTPM(expr_filtered, log = T)) 
+tfs = compute.TFs.activity(counts.norm, TF.collection = "CollecTRI")
+network = compute.WTCNA(tfs, corr_mod = 0.8, clustering.method = "ward.D2", return = T) 
+compute.metada.association(network[[1]], clinical.data, pval = 0.05, width = 10) 
+pathways = compute.pathway.activity(counts.norm)
+compute.modules.relationship(network[[1]], pathways, "Pathways_Progeny-TFs_Modules", width = 15)
+hub_tfs = identify_hub_TFs(t(tfs), network, MM_thresh = 0.8, degree_thresh = 0.9)
+compute.modules.enrichment(counts.norm, hub_tfs)
+dt = multideconv::compute.deconvolution.analysis(deconv, corr = 0.7, seed = 123) 
+
+#Association of TFs modules with deconvolution 
+compute.modules.relationship(network[[1]], dt[[1]], "Deconvolution-TFs_Modules", vertical = T, height = 30, width = 10, pval = 0.05)
+cell_groups = construct_cell_groups(counts.norm, tfs, deconv, network, dt, pval = 0.05)
+```
+
+```{r}
+res_fisher = cell.groups.fisher.test(cell_groups, clinical.data, "Best.Confirmed.Overall.Response", pval = 0.01)
+res_anova = cell.groups.anova.test(cell_groups, clinical.data, "Best.Confirmed.Overall.Response", pval = 0.01)
 ```
