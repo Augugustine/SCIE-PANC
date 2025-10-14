@@ -18,7 +18,7 @@
 #'
 #' The function does not return an object to the R environment.
 
-compute.metada.association = function(deconv.results, coldata, pval = 0.05, width = 20, height = 8){
+metada.association = function(deconv.results, coldata, pval = 0.05, width = 20, height = 8){
   ###Association with categorical variables
   coldata_categorical = coldata %>%
     dplyr::select(dplyr::where(is.character)|dplyr::where(is.factor))
@@ -147,3 +147,82 @@ compute.metada.association = function(deconv.results, coldata, pval = 0.05, widt
   }
   
 }
+
+
+
+## Function to calculate the correlation between a cluster column and clinical data (categorical or continuous)
+# Apply Fisher test for categorical and Anova for continuous
+
+perform_statistical_tests <- function(data, cluster_col = "cluster") {
+  
+  # Separate the cluster column
+  clusters <- data[[cluster_col]]
+  variables <- data[, !names(data) %in% cluster_col]
+  
+  # Initialize the results dataframe
+  results <- data.frame(
+    variable = character(),
+    type = character(),
+    test = character(),
+    statistic = numeric(),
+    p_value = numeric(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop over each variable
+  for (var_name in names(variables)) {
+    var <- variables[[var_name]]
+    
+    # Determine if the variable is continuous or categorical
+    is_continuous <- is.numeric(var) && length(unique(var)) > 10
+    
+    if (is_continuous) {
+      # ANOVA test for continuous variables
+      tryCatch({
+        aov_result <- aov(var ~ clusters)
+        aov_summary <- summary(aov_result)
+        
+        results <- rbind(results, data.frame(
+          variable = var_name,
+          type = "continuous",
+          test = "ANOVA",
+          statistic = aov_summary[[1]]$`F value`[1],
+          p_value = aov_summary[[1]]$`Pr(>F)`[1]
+        ))
+      }, error = function(e) {
+        message(paste("ANOVA error for", var_name, ":", e$message))
+      })
+      
+    } else {
+      # Fisher's exact test for categorical variables
+      tryCatch({
+        # Create contingency table
+        cont_table <- table(var, clusters)
+        
+        # Fisher’s exact test (with simulation for large tables)
+        test_result <- fisher.test(cont_table, simulate.p.value = TRUE)
+        
+        results <- rbind(results, data.frame(
+          variable = var_name,
+          type = "categorical",
+          test = "Fisher exact",
+          statistic = NA,  # Fisher test has no F or Chi-square statistic
+          p_value = test_result$p.value
+        ))
+      }, error = function(e) {
+        message(paste("Fisher test error for", var_name, ":", e$message))
+      })
+    }
+  }
+  
+  # Add significance columns
+  results$significant <- results$p_value < 0.05
+  results$significance_stars <- cut(results$p_value,
+                                    breaks = c(0, 0.001, 0.01, 0.05, 1),
+                                    labels = c("***", "**", "*", "ns"),
+                                    include.lowest = TRUE)
+  
+  return(results)
+}
+
+

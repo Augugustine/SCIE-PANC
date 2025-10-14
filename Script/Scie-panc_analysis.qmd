@@ -432,7 +432,7 @@ ggsave("deconv.jpeg", plot, width = 6000, height = 4000, units = "px")
 clinical.data<-clinical
 rownames(clinical.data)<-clinical.data$PCSI.ID
 clinical.data<-clinical.data[,c(-1,-2)]
-deconv.metadata<-compute.metada.association(results,clinical.data, width = 12, height = 30)
+deconv.metadata<-metada.association(results,clinical.data, width = 12, height = 30)
 ```
 
 ```{r}
@@ -534,12 +534,20 @@ cluster$ID <- rownames(cluster)
 clinical.data <- merge(clinical.data, cluster, by = "ID")
 rownames(clinical.data)<-clinical.data$ID
 clinical.data<-clinical.data[,-1]
+cluster<-cluster[,- cluster$ID]
 ```
 
 ANOVA for continuous variables and Chi2 for qualitative variables
 
 ```{r}
+cluster.metadata<-perform_statistical_tests(clinical.data, cluster_col="cluster")
+ggplot(clinical.data, aes(x = cluster, fill = Moffitt.latest)) +
+  geom_bar(position = "fill") +
+  ylab("Proportion")
 
+ggplot(clinical.data, aes(x = cluster, fill = liver.mets.at.dx)) +
+  geom_bar(position = "fill") +
+  ylab("Proportion")
 ```
 
 ## Gene regulatory network inference
@@ -759,7 +767,7 @@ res <- as.data.frame(res)
 res$FDR <- p.adjust(res$pvalue, method="BH")
 ```
 
-## CellTFusion 
+## CellTFusion
 
 ```{r}
 #| include: false
