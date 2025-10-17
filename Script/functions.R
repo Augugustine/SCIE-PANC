@@ -149,7 +149,6 @@ metada.association = function(deconv.results, coldata, pval = 0.05, width = 20, 
 }
 
 
-
 ## Function to calculate the correlation between a cluster column and clinical data (categorical or continuous)
 # Apply Fisher test for categorical and Anova for continuous
 
@@ -226,3 +225,134 @@ perform_statistical_tests <- function(data, cluster_col = "cluster") {
 }
 
 
+## Heatmap function 
+plot_heatmap<- function(relationship_result, 
+                                           file_name = "features_traits_heatmap.pdf",
+                                           width = 10, 
+                                           height = 12,
+                                           cluster_rows = FALSE,
+                                           cluster_cols = FALSE) {
+  # Extraire les données
+  cor_matrix <- relationship_result[[1]]  # Matrice: traits (lignes) x features (colonnes)
+  sig_list   <- relationship_result[[2]]  # Liste des features significatives par trait
+  
+  # Transposer pour avoir features en lignes et traits en colonnes
+  cor_matrix_t <- t(cor_matrix)
+  
+  # Créer une matrice de texte vide pour afficher uniquement les corrélations significatives
+  text_matrix <- matrix("", 
+                        nrow = nrow(cor_matrix_t), 
+                        ncol = ncol(cor_matrix_t),
+                        dimnames = dimnames(cor_matrix_t))
+  
+  # Remplir UNIQUEMENT les corrélations significatives avec 2 décimales
+  for (trait in colnames(cor_matrix_t)) {
+    sig_features <- sig_list[[trait]]
+    if (is.null(sig_features) || length(sig_features) == 0) next
+    
+    sig_features <- intersect(sig_features, rownames(cor_matrix_t))
+    for (feat in sig_features) {
+      val <- cor_matrix_t[feat, trait]
+      text_matrix[feat, trait] <- sprintf("%.2f", val)
+    }
+  }
+  
+  # Extraire les types cellulaires et méthodes
+  feature_names <- rownames(cor_matrix_t)
+  
+  # Fonction pour extraire le type cellulaire
+  extract_cell_type <- function(name) {
+    # Liste des méthodes connues
+    methods <- c("DeconRNASeq", "Epidish", "DWLS", "Quantiseq", "EPIC", "xCell", "MCP", "TIMER")
+    
+    # Retirer la méthode au début SEULEMENT si elle existe
+    name_clean <- name
+    for (method in methods) {
+      if (startsWith(name, paste0(method, "_"))) {
+        name_clean <- sub(paste0("^", method, "_"), "", name)
+        break
+      }
+    }
+    
+    # Si "Subgroup" ou "Iteration" présent, garder uniquement la partie avant
+    if (grepl("_Subgroup|_Iteration", name_clean)) {
+      cell_type <- sub("_Subgroup.*", "", name_clean)
+      cell_type <- sub("_Iteration.*", "", cell_type)
+    } else {
+      # Sinon, comportement pour les noms techniques avec préfixes
+      # Extraire après le dernier underscore si présent
+      if (grepl("_", name_clean)) {
+        cell_type <- sub(".*_", "", name_clean)
+      } else {
+        cell_type <- name_clean
+      }
+    }
+    
+    # Nettoyer les suffixes .Subgroup/.Iteration qui restent (sécurité)
+    cell_type <- gsub("\\.Subgroup.*", "", cell_type)
+    cell_type <- gsub("\\.Iteration.*", "", cell_type)
+    
+    # Remplacer les points par des espaces pour la lisibilité
+    cell_type <- gsub("\\.", " ", cell_type)
+    
+    return(cell_type)
+  }
+  
+  
+  # Extraire les types cellulaires
+  cell_types <- sapply(feature_names, extract_cell_type, USE.NAMES = FALSE)
+  
+  # Créer le dataframe d'annotation (sans la méthode)
+  annotation_row <- data.frame(
+    Cell_Types = cell_types,
+    row.names = feature_names
+  )
+  
+  # Définir les couleurs pour les types cellulaires
+  unique_cells <- unique(cell_types)
+  n_cells <- length(unique_cells)
+  
+  # Générer suffisamment de couleurs pour tous les types cellulaires
+  if (n_cells <= 12) {
+    # Utiliser Set3 qui a 12 couleurs max
+    if (n_cells < 3) {
+      cell_colors <- RColorBrewer::brewer.pal(3, "Set3")[1:n_cells]
+    } else {
+      cell_colors <- RColorBrewer::brewer.pal(n_cells, "Set3")
+    }
+  } else {
+    # Utiliser rainbow pour un grand nombre de types
+    cell_colors <- rainbow(n_cells, s = 0.6, v = 0.9)
+  }
+  names(cell_colors) <- unique_cells
+  
+  # Liste des couleurs d'annotation
+  annotation_colors <- list(
+    Type_Cellulaire = cell_colors
+  )
+  
+  # Générer la heatmap
+  pdf(file_name, width = width, height = height)
+  pheatmap::pheatmap(
+    cor_matrix_t,
+    color = colorRampPalette(c("blue", "white", "red"))(100),
+    breaks = seq(-1, 1, length.out = 101),
+    cluster_rows = cluster_rows,
+    cluster_cols = cluster_cols,
+    display_numbers = text_matrix,
+    number_color = "black",
+    fontsize_number = 8,
+    na_col = "white",
+    main = "Clinical associations with myeloid lineage cell types\nOnly showing significant associations (pvalue < 0.05)",
+    angle_col = 45,
+    fontsize_row = 8,
+    fontsize_col = 10,
+    border_color = NA,
+    annotation_row = annotation_row,
+    annotation_colors = annotation_colors
+  )
+  dev.off()
+  
+  
+  return(invisible(cor_matrix_t))
+}

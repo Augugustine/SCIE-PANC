@@ -58,6 +58,10 @@ clinical$First.Tx.Backbone <- ifelse(clinical$First.Tx.Backbone == "GA "|clinica
 clinical$First.Tx.Backbone <- ifelse(clinical$First.Tx.Backbone == "FFX ", "FFX", clinical$First.Tx.Backbone)
 clinical$First.Tx.Backbone <- ifelse(clinical$First.Tx.Backbone == "None", "none", clinical$First.Tx.Backbone)
 clinical$First.Tx.Backbone <- ifelse(clinical$First.Tx.Backbone == "cisplatin/gemcitabine", "cis/gem", clinical$First.Tx.Backbone)
+clinical$Sum.Diameter <- as.numeric(clinical$Sum.Diameter)
+clinical$Best.tumor.response <- as.numeric(clinical$Best.tumor.response)
+clinical$Ca.19.9.Value.baseline <- as.numeric(clinical$Ca.19.9.Value.baseline)
+clinical$survival.days <- as.numeric(clinical$survival.days)
 ```
 
 Name the column by patient numero and genes column
@@ -436,7 +440,7 @@ clinical.data$Best.tumor.response <- as.numeric(clinical.data$Best.tumor.respons
 clinical.data$Ca.19.9.Value.baseline <- as.numeric(clinical.data$Ca.19.9.Value.baseline)
 rownames(clinical.data)<-clinical.data$PCSI.ID
 clinical.data<-clinical.data[,c(-1,-2)]
-deconv.metadata<-metada.association(results,clinical.data, width = 12, height = 30)
+deconv.metadata<-metada.association(results, clinical.data, width = 12, height = 30)
 ```
 
 ```{r}
@@ -469,17 +473,57 @@ dist_rows <- dist(mat_filled)
 clust_rows <- hclust(dist_rows, method = "ward.D2")
 
 # Clustering (columns)
-dist_cols <- dist(t(mat_filled))
-clust_cols <- hclust(dist_cols, method = "ward.D2")
+#dist_cols <- dist(t(mat_filled))
+#clust_cols <- hclust(dist_cols, method = "ward.D2")
 
 # Heatmap with dendrogrammes
 plot<-pheatmap(t(deconv.metadata), 
          cluster_rows = clust_rows,
-         cluster_cols = clust_cols,
+         cluster_cols = FALSE,
          color = colorRampPalette(c("blue","white","red"))(100),
          na_col = "grey90", angle_col = "315", main="Clinical associations with cell types only showing significant associations (pvalue < 0.05)")
 plot
 ggsave("Plots/deconv_corr.jpeg", plot, width = 8000, height = 3000, units = "px")
+```
+
+Focus on response, prior surgey and deconvolution grouped by cell types
+
+```{r}
+# change the group response
+# CR+PR vs SD+PD
+focus.clinical<-clinical
+rownames(focus.clinical)<-focus.clinical$PCSI.ID
+focus.clinical<-focus.clinical[,c("Priory.curative.surgey.for.PDAC","Best.response.1st.line", "Best.tumor.response", "survival.days", "hrdetect_score")]
+focus.clinical$Best.Response<-ifelse(focus.clinical$Best.response.1st.line == "CR"|focus.clinical$Best.response.1st.line == "PR", "Response", "No response")
+focus.clinical<-focus.clinical[,-2]
+focus.clinical$Best.tumor.response <- as.numeric(focus.clinical$Best.tumor.response)
+deconv.metadata<-metada.association(results, focus.clinical, width = 12, height = 30)
+```
+
+```{r}
+mat_filled <- t(deconv.metadata)
+mat_filled[is.na(mat_filled)] <- 0  
+
+# Clustering (rows)
+dist_rows <- dist(mat_filled)  
+clust_rows <- hclust(dist_rows, method = "ward.D2")
+
+# Clustering (columns)
+#dist_cols <- dist(t(mat_filled))
+#clust_cols <- hclust(dist_cols, method = "ward.D2")
+
+# Heatmap with dendrogrammes
+plot<-pheatmap(t(deconv.metadata), 
+         cluster_rows = clust_rows,
+         cluster_cols = FALSE,
+         color = colorRampPalette(c("blue","white","red"))(100),
+         na_col = "grey90", angle_col = "315", main="Clinical associations with cell types only showing significant associations (pvalue < 0.05)")
+plot
+ggsave("Plots/deconv_corr_bis.jpeg", plot, width = 8000, height = 2000, units = "px")
+```
+
+```{r}
+
 ```
 
 PCA
@@ -811,7 +855,11 @@ HRDetect Score
 #| include: false
 clinical.data<-clinical
 rownames(clinical.data)<-clinical.data$PCSI.ID
-clinical.data<-clinical.data[,c(-1,-2)]
+clinical.data<-clinical.data[,c(-1,-2,-3,-4,-5,-6,-8,-11,-12,-13,-17,-18,-19,-20,-21,-23,-27)]
+clinical.data$Best.Response<-ifelse(clinical.data$Best.response.1st.line == "CR"|clinical.data$Best.response.1st.line == "PR", "Response", "No response")
+clinical.data$Best.Response <- factor(clinical.data$Best.Response)
+clinical.data$Best.Response <- relevel(clinical.data$Best.Response, ref = "Response")
+clinical.data$Best.response.1st.line <- factor(clinical.data$Best.response.1st.line, level=c("CR","PR","SD","PD"))
 
 res <- CellTFusion(
   raw.counts = expr_filtered,
@@ -844,6 +892,28 @@ cell_groups = construct_cell_groups(counts.norm, tfs, deconv, network, dt, pval 
 ```
 
 ```{r}
-res_fisher = cell.groups.fisher.test(cell_groups, clinical.data, "Best.Confirmed.Overall.Response", pval = 0.01)
-res_anova = cell.groups.anova.test(cell_groups, clinical.data, "Best.Confirmed.Overall.Response", pval = 0.01)
+res_fisher = cell.groups.fisher.test(cell_groups, clinical.data, "Best.response.1st.line", pval = 0.01)
+res_fisher = cell.groups.fisher.test(cell_groups, clinical.data, "Best.Response", pval = 0.01)
+res_anova = cell.groups.anova.test(cell_groups, clinical.data, "Best.tumor.response", pval = 0.01)
+```
+
+Compute relationship between deconvolution and TF module choosing some cell types
+
+```{r}
+# Only immune cells 
+# Lymphoid lineage
+dt.lymp<-dt[[1]]
+cols_to_keep <- grep("B\\.cells|B.naive|B.memory|NK|CD8|CD4|T.cells|Plasma", colnames(dt.lymp), value = TRUE)
+dt.lymp <- dt.lymp[, cols_to_keep]
+relationship.lymp<-compute.modules.relationship(network[[1]], dt.lymp, "Deconvolution(lymph)-TFs_Modules", vertical = T, height = 15, width = 15, pval = 0.05, return=T)
+plot_heatmap(relationship.lymp, width = 12, height = 12, lineage="lymphoid")
+```
+
+```{r}
+# Myeloid lineage
+dt.myel<-dt[[1]]
+cols_to_keep <- grep("Mast|Neutrophils|Eosinophils|Monocytes|Basophils|Macrophages", colnames(dt.myel), value = TRUE)
+dt.myel <- dt.myel[, cols_to_keep]
+relationship.myel<-compute.modules.relationship(network[[1]], dt.myel, "Deconvolution(lymph)-TFs_Modules", vertical = T, height = 15, width = 15, pval = 0.05, return=T)
+plot_heatmap(relationship.myel, width = 12, height = 12)
 ```
