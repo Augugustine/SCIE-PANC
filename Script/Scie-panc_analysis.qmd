@@ -62,6 +62,7 @@ clinical$Sum.Diameter <- as.numeric(clinical$Sum.Diameter)
 clinical$Best.tumor.response <- as.numeric(clinical$Best.tumor.response)
 clinical$Ca.19.9.Value.baseline <- as.numeric(clinical$Ca.19.9.Value.baseline)
 clinical$survival.days <- as.numeric(clinical$survival.days)
+clinical$Best.Response<-ifelse(clinical$Best.response.1st.line == "CR"|clinical$Best.response.1st.line == "PR", "Response", "No response")
 ```
 
 Name the column by patient numero and genes column
@@ -228,6 +229,7 @@ pca_data$Metastatic<-tolower(pca_data$Metastatic)
 pca_data$Location <- clinical$Location.bx
 pca_data$surgey <- clinical$Priory.curative.surgey.for.PDAC
 pca_data$backbone <- clinical$First.Tx.Backbone
+pca_data$best_response <- clinical$Best.Response
 ```
 
 ```{r}
@@ -253,7 +255,7 @@ plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = kras_subtype, shape = Sex))
     scale_color_manual(values = c("wt" = "blue", "minor" = "lightblue", "balanced"="yellow", "major"="red")) +
     theme(legend.position = "top")
 plot
-ggsave("pca_kras_subtype.jpeg", plot, width = 3000, height = 2000, units = "px")
+ggsave("Plots/pca_kras_subtype.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
@@ -277,7 +279,33 @@ plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = response, shape = Sex)) +
     scale_color_manual(values = c("CR" = "blue", "SD" ="pink", "PD"="red", "NE"="grey","missing"="black", "PR"="lightblue")) +
     theme(legend.position = "top")
 plot
-ggsave("pca_response.jpeg", plot, width = 3000, height = 2000, units = "px")
+ggsave("Plots/pca_response.jpeg", plot, width = 3000, height = 2000, units = "px")
+```
+
+```{r}
+plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = best_response, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, Response and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("Response" = "blue", "No response"="red")) +
+    theme(legend.position = "top")
+plot
+ggsave("Plots/pca_best_response.jpeg", plot, width = 3000, height = 2000, units = "px")
+```
+
+```{r}
+plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = surgey, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA Bulk RNA-seq Data PDAC, Response and Gender",
+         x = "Principal Component 1 (8.33%)",
+         y = "Principal Component 2 (4.46%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("no" = "blue", "yes"="red")) +
+    theme(legend.position = "top")
+plot
+ggsave("Plots/pca_prior_surgey.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
@@ -290,7 +318,7 @@ plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = Moffitt, shape = Sex)) +
     scale_color_manual(values = c("basal-like" = "blue", "classical"="red")) +
     theme(legend.position = "top")
 plot
-ggsave("pca_moffitt.jpeg", plot, width = 3000, height = 2000, units = "px")
+ggsave("Plots/pca_moffitt.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
@@ -303,7 +331,7 @@ plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = Metastatic, shape = Sex)) +
     scale_color_manual(values = c("no" = "blue", "yes"="red")) +
     theme(legend.position = "top")
 plot
-ggsave("pca_metastases.jpeg", plot, width = 3000, height = 2000, units = "px")
+ggsave("Plots/pca_metastases.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
@@ -316,7 +344,7 @@ plot<-ggplot(pca_data, aes(x = PC1, y = PC2, color = Location, shape = Sex)) +
     scale_color_manual(values = c("Pancreas" = "blue", "Adrenal gland" = "pink", "Omentum"="yellow", "Liver"="red", "Lymph Node(s) Supraclav"="grey","Abdominal wall"="darkgreen","Peritoneum"="orange", "Lung"="lightblue","Ovary"="black")) +
     theme(legend.position = "top")
 plot
-ggsave("pca_loc.jpeg", plot, width = 3000, height = 2000, units = "px")
+ggsave("Plots/pca_loc.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 ```{r}
@@ -522,10 +550,6 @@ plot
 ggsave("Plots/deconv_corr_bis.jpeg", plot, width = 8000, height = 2000, units = "px")
 ```
 
-```{r}
-
-```
-
 PCA
 
 ```{r}
@@ -543,6 +567,8 @@ pca_deconv$Metastatic <- clinical$Metastatic.Disease.
 pca_deconv$Location <- clinical$Location.bx
 pca_deconv$gHRD <- clinical$gHRD
 pca_deconv$ECOG <- clinical$ECOG
+pca_deconv$best.response <- clinical$Best.Response
+pca_deconv$prior.surgery <- clinical$Priory.curative.surgey.for.PDAC
 pca_deconv$ECOG <- as.character(pca_deconv$ECOG)
 ```
 
@@ -566,6 +592,37 @@ ggplot(pca_deconv, aes(x = PC1, y = PC2, color = ECOG, shape = Sex)) +
     theme_minimal() +
     scale_color_manual(values = c("0" = "blue", "1" = "red")) +
     theme(legend.position = "top")
+
+ggplot(pca_deconv, aes(x = PC1, y = PC2, color = response, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA on deconvolution features, Response and Gender",
+         x = "Principal Component 1 (11.25%)",
+         y = "Principal Component 2 (8.19%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("CR" = "blue", "SD" ="pink", "PD"="red", "NE"="grey","missing"="black", "PR"="lightblue")) +
+    theme(legend.position = "top")
+
+plot<-ggplot(pca_deconv, aes(x = PC1, y = PC2, color = best.response, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA on deconvolution features, Response and Gender",
+         x = "Principal Component 1 (11.25%)",
+         y = "Principal Component 2 (8.19%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("Response" = "blue", "No response"="red")) +
+    theme(legend.position = "top")
+plot
+ggsave("Plots/pca_deconv_response.jpeg", plot, width = 3000, height = 2000, units = "px")
+
+plot<-ggplot(pca_deconv, aes(x = PC1, y = PC2, color = prior.surgery, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA on deconvolution features, Prior curative surgery and Gender",
+         x = "Principal Component 1 (11.25%)",
+         y = "Principal Component 2 (8.19%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("no" = "blue", "yes"="red")) +
+    theme(legend.position = "top")
+plot
+ggsave("Plots/pca_deconv_surgery.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 Clusters related to clinical data
@@ -715,6 +772,8 @@ pca_prot$response <- clinical$Best.response.1st.line
 pca_prot$Moffitt <- clinical$Moffitt.latest
 pca_prot$Metastatic <- clinical$Metastatic.Disease.
 pca_prot$Location <- clinical$Location.bx
+pca_prot$best.response <- clinical$Best.Response
+pca_prot$prior.surgery <- clinical$Priory.curative.surgey.for.PDAC
 pca_prot$gHRD <- clinical$gHRD
 ```
 
@@ -754,7 +813,29 @@ plot<-ggplot(pca_prot, aes(x = PC1, y = PC2, color = gHRD, shape = Moffitt)) +
     scale_color_manual(values = c("no" = "blue", "yes"="red")) +
     theme(legend.position = "top")
 plot
-ggsave("pca_prot_metaxmoffitt.jpeg", plot, width = 3000, height = 2000, units = "px")
+ggsave("Plots/pca_prot_metaxmoffitt.jpeg", plot, width = 3000, height = 2000, units = "px")
+
+plot<-ggplot(pca_prot, aes(x = PC1, y = PC2, color = best.response, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA proteins activity, Response",
+         x = "Principal Component 1 (24.3%)",
+         y = "Principal Component 2 (14.3%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("Response" = "blue", "No response"="red")) +
+    theme(legend.position = "top")
+plot
+ggsave("Plots/pca_prot_response.jpeg", plot, width = 3000, height = 2000, units = "px")
+
+plot<-ggplot(pca_prot, aes(x = PC1, y = PC2, color = prior.surgery, shape = Sex)) +
+    geom_point(size = 3) +
+    labs(title = "PCA proteins activity, Prior curative surgery",
+         x = "Principal Component 1 (24.3%)",
+         y = "Principal Component 2 (14.3%)") +
+    theme_minimal() +
+    scale_color_manual(values = c("no" = "blue", "yes"="red")) +
+    theme(legend.position = "top")
+plot
+ggsave("Plots/pca_prot_surgery.jpeg", plot, width = 3000, height = 2000, units = "px")
 ```
 
 Heatmap
@@ -783,7 +864,7 @@ ggsave("heatmap_TF.jpeg", plot, width = 5000, height = 4000, units = "px")
 
 ## Differential genes expression
 
-Metastic disease
+#### Moffitt
 
 ```{r}
 dds <- DESeqDataSetFromMatrix(
@@ -794,6 +875,7 @@ dds <- DESeqDataSetFromMatrix(
 ```
 
 ```{r}
+#| include: false
 dds <- DESeq(dds)
 res <- results(dds, contrast=c("Moffitt.latest", "basal-like", "classical"))
 res <- lfcShrink(dds, coef="Moffitt.latest_classical_vs_basal.like", type="apeglm")
@@ -837,19 +919,153 @@ plot
 ggsave("Plots/GO.jpeg", plot, width = 4000, height = 3000, units = "px")
 ```
 
-Metastic disease
+#### Response
 
 ```{r}
+#| include: false
+clinical$Best.Response <- factor(clinical$Best.Response)
+dds <- DESeqDataSetFromMatrix(
+  countData = expr_filtered,
+  colData = clinical,
+  design = ~ Best.Response
+)
 dds <- DESeq(dds)
-res <- results(dds, contrast=c("Metastatic.Disease.", "yes", "no"))
-res <- lfcShrink(dds, coef="Moffitt.latest_classical_vs_basal.like", type="apeglm")
+res <- results(dds, contrast=c("Best.Response", "Response", "No response"))
+res <- lfcShrink(dds, coef="Best.Response_Response_vs_No.response", type="apeglm")
 res <- as.data.frame(res)
 res$FDR <- p.adjust(res$pvalue, method="BH")
 ```
 
-HRDetect Score
+```{r}
+res$Significant <- "No"
+res$Significant[res$FDR < 0.05 & res$log2FoldChange > 1] <- "Up"
+res$Significant[res$FDR < 0.05 & res$log2FoldChange < -1] <- "Down"
+#top_genes <- res[order(res$padj), ][1:20, ]
+#top_genes$gene<-rownames(top_genes)
+res$gene <- rownames(res)
+res_up   <- res[res$log2FoldChange > 0, ]
+res_down <- res[res$log2FoldChange < 0, ]
+top_up   <- head(res_up[order(res_up$padj), ], 20)
+top_down <- head(res_down[order(res_down$padj), ], 20)
+top_genes <- rbind(top_up, top_down)
+
+plot<-ggplot(res, aes(x=log2FoldChange, y=-log10(FDR), color=Significant)) +
+  geom_point(alpha=0.5) +
+  scale_color_manual(values=c("darkblue","grey","red")) +
+    geom_text_repel(data = top_genes, aes(label = gene), box.padding = 0.5, max.overlaps = Inf, size = 3) +
+  theme_minimal() +
+  xlab("Log2 Fold Change") +
+  ylab("-Log10 FDR") +
+  ggtitle("Volcano Plot response vs no response")
+plot
+ggsave("Plots/volcano_best-response.jpeg", plot, width = 4000, height = 3000, units = "px")
+```
+
+GO
+
+```{r}
+genes<-rownames(res[res$log2FoldChange>0.5,])
+Go_results<-enrichGO(gene=genes, OrgDb="org.Hs.eg.db", keyType= "SYMBOL", ont="BP")
+as.data.frame(Go_results)
+plot<-plot(barplot(Go_results, showCategory=20))+ggtitle("GO Enrichment Analysis of response vs no response")
+plot
+ggsave("Plots/GO_response.jpeg", plot, width = 4000, height = 3000, units = "px")
+```
+
+#### Prior surgey
+
+```{r}
+#| include: false
+dds <- DESeqDataSetFromMatrix(
+  countData = expr_filtered,
+  colData = clinical,
+  design = ~ Priory.curative.surgey.for.PDAC
+)
+dds <- DESeq(dds)
+res <- results(dds, contrast=c("Priory.curative.surgey.for.PDAC", "yes", "no"))
+res <- lfcShrink(dds, coef="Priory.curative.surgey.for.PDAC_yes_vs_no", type="apeglm")
+res <- as.data.frame(res)
+res$FDR <- p.adjust(res$pvalue, method="BH")
+```
+
+```{r}
+res$Significant <- "No"
+res$Significant[res$FDR < 0.05 & res$log2FoldChange > 1] <- "Up"
+res$Significant[res$FDR < 0.05 & res$log2FoldChange < -1] <- "Down"
+#top_genes <- res[order(res$padj), ][1:20, ]
+#top_genes$gene<-rownames(top_genes)
+res$gene <- rownames(res)
+res_up   <- res[res$log2FoldChange > 0, ]
+res_down <- res[res$log2FoldChange < 0, ]
+top_up   <- head(res_up[order(res_up$padj), ], 20)
+top_down <- head(res_down[order(res_down$padj), ], 20)
+top_genes <- rbind(top_up, top_down)
+
+plot<-ggplot(res, aes(x=log2FoldChange, y=-log10(FDR), color=Significant)) +
+  geom_point(alpha=0.5) +
+  scale_color_manual(values=c("darkblue","grey","red")) +
+    geom_text_repel(data = top_genes, aes(label = gene), box.padding = 0.5, max.overlaps = Inf, size = 3) +
+  theme_minimal() +
+  xlab("Log2 Fold Change") +
+  ylab("-Log10 FDR") +
+  ggtitle("Volcano Plot prior curative surgery vs not")
+plot
+ggsave("Plots/volcano_surgey.jpeg", plot, width = 4000, height = 3000, units = "px")
+```
+
+GO
+
+```{r}
+genes<-rownames(res[res$log2FoldChange>0.5,])
+Go_results<-enrichGO(gene=genes, OrgDb="org.Hs.eg.db", keyType= "SYMBOL", ont="BP")
+as.data.frame(Go_results)
+plot<-plot(barplot(Go_results, showCategory=20))+ggtitle("GO Enrichment Analysis of prior curative surgery vs not")
+plot
+ggsave("Plots/GO_surgey.jpeg", plot, width = 4000, height = 4000, units = "px")
+```
+
+#### 
 
 ## CellTFusion
+
+```{r}
+#| include: false
+clinical.data<-clinical
+rownames(clinical.data)<-clinical.data$PCSI.ID
+clinical.data<-clinical.data[,c(-1,-2,-3,-4,-5,-6,-8,-11,-12,-13,-17,-18,-19,-20,-21,-23,-27)]
+clinical.data$Best.Response <- factor(clinical.data$Best.Response)
+clinical.data$Best.Response <- relevel(clinical.data$Best.Response, ref = "Response")
+clinical.data$Best.response.1st.line <- factor(clinical.data$Best.response.1st.line, level=c("CR","PR","SD","PD"))
+
+res <- CellTFusion(
+  raw.counts = expr_filtered,
+  normalized = TRUE,
+  coldata = clinical.data, 
+  deconv_methods = c("Quantiseq", "Epidish", "DeconRNASeq", "DWLS"), 
+  file_name = "Scie-panc",
+  corr = 0.7,
+  pval = 0.05,
+  high_corr_groups = 0.85,
+  return = FALSE
+)
+```
+
+```{r}
+# We first normalize by log2(TPM + 1)
+counts.norm = data.frame(ADImpute::NormalizeTPM(expr_filtered, log = T)) 
+tfs = compute.TFs.activity(counts.norm, TF.collection = "CollecTRI")
+network = compute.WTCNA(tfs, corr_mod = 0.8, clustering.method = "ward.D2", return = T) 
+compute.metada.association(network[[1]], clinical.data, pval = 0.05, width = 10) 
+pathways = compute.pathway.activity(counts.norm)
+compute.modules.relationship(network[[1]], pathways, "Pathways_Progeny-TFs_Modules", width = 15)
+hub_tfs = identify_hub_TFs(t(tfs), network, MM_thresh = 0.8, degree_thresh = 0.9)
+compute.modules.enrichment(counts.norm, hub_tfs)
+dt = multideconv::compute.deconvolution.analysis(deconv, corr = 0.7, seed = 123) 
+
+#Association of TFs modules with deconvolution 
+compute.modules.relationship(network[[1]], dt[[1]], "Deconvolution-TFs_Modules", vertical = T, height = 30, width = 10, pval = 0.05)
+cell_groups = construct_cell_groups(counts.norm, tfs, deconv, network, dt, pval = 0.05)
+```
 
 ```{r}
 #| include: false
