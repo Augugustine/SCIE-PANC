@@ -1109,11 +1109,35 @@ cell_groups = construct_cell_groups(counts.norm, tfs, deconv, network, dt, pval 
 
 ```{r}
 res_fisher = cell.groups.fisher.test(cell_groups, clinical.data, "Best.response.1st.line", pval = 0.01)
-res_fisher = cell.groups.fisher.test(cell_groups, clinical.data, "Best.Response", pval = 0.01)
+# Better to use the wilcox test than Fisher
 res_anova = cell.groups.anova.test(cell_groups, clinical.data, "Best.tumor.response", pval = 0.01)
+res_anova = cell.groups.anova.test(cell_groups, clinical.data, "Best.response.1st.line", pval = 0.01)
+res_wilcox = cell.groups.wilcox.test(cell_groups, clinical.data, "Best.Response", pval = 0.01)
+tumor_response<-clinical.data
+tumor_response<-tumor_response[,"Best.tumor.response"]
+tumor_response<-as.data.frame(tumor_response)
+res_person = compute.metada.association(cell_groups[[1]], tumor_response, width = 6, height = 15)
+# correlated with : Dendrogram_green_group_1, Dendrogram_turquoise_group_2, Dendrogram_blue_group_6, Dendrogram_blue.group_combined_5, Dendrogram_red.group_combined_7 
+
+cell_gp<-cell_groups[[1]]
+cell_gp$PCSI.ID<-rownames(cell_gp)
+clinical.bis<-clinical.data
+clinical.bis$PCSI.ID<-rownames(clinical.bis)
+clinical.bis<-clinical.bis[,c("Best.tumor.response", "PCSI.ID")]
+
+tumor_size <- merge(cell_gp, clinical.bis, by="PCSI.ID")
+tumor_size<-tumor_size[,c("Dendrogram_green_group_1", "Dendrogram_turquoise_group_2", "Dendrogram_blue_group_6", "Dendrogram_blue.group_combined_5", "Dendrogram_red.group_combined_7","Best.tumor.response")]
+
+ggplot(tumor_size, aes(x = Best.tumor.response, y = Dendrogram_blue_group_6)) +
+  geom_point() +
+  labs(title = "Relation entre taille tumorale et score du groupe cellulaire",
+       x = "Taille tumorale",
+       y = "Score groupe cellulaire") +
+  theme_minimal()
+
 ```
 
-Compute relationship between deconvolution and TF module choosing some cell types
+Compute relationship between deconvolution and TF module for the myeloid and lymphoid lineage
 
 ```{r}
 # Only immune cells 
@@ -1121,7 +1145,7 @@ Compute relationship between deconvolution and TF module choosing some cell type
 dt.lymp<-dt[[1]]
 cols_to_keep <- grep("B\\.cells|B.naive|B.memory|NK|CD8|CD4|T.cells|Plasma", colnames(dt.lymp), value = TRUE)
 dt.lymp <- dt.lymp[, cols_to_keep]
-relationship.lymp<-compute.modules.relationship(network[[1]], dt.lymp, "Deconvolution(lymph)-TFs_Modules", vertical = T, height = 15, width = 15, pval = 0.05, return=T)
+relationship.lymp<-compute.modules.relationship(network[[1]], dt.lymp, "Deconvolution(lymph)-TFs_Modules", vertical = T, height = 15, width = 15, pval = 0.05, return=F, plot=TRUE)
 plot_heatmap(relationship.lymp, width = 12, height = 12, lineage="lymphoid")
 ```
 
@@ -1130,6 +1154,20 @@ plot_heatmap(relationship.lymp, width = 12, height = 12, lineage="lymphoid")
 dt.myel<-dt[[1]]
 cols_to_keep <- grep("Mast|Neutrophils|Eosinophils|Monocytes|Basophils|Macrophages", colnames(dt.myel), value = TRUE)
 dt.myel <- dt.myel[, cols_to_keep]
-relationship.myel<-compute.modules.relationship(network[[1]], dt.myel, "Deconvolution(lymph)-TFs_Modules", vertical = T, height = 15, width = 15, pval = 0.05, return=T)
+relationship.myel<-compute.modules.relationship(network[[1]], dt.myel, "Deconvolution(myel)-TFs_Modules", vertical = T, height = 15, width = 15, pval = 0.05, return=F, plot=T)
 plot_heatmap(relationship.myel, width = 12, height = 12)
+```
+
+Compute relationship between deconvolution and pathways for the myeloid and lymphoid lineage
+
+```{r}
+compute.modules.relationship(res[[4]], dt.myel, "Deconvolution(myel)-pathways", vertical = T, height = 15, width = 15, pval = 0.05, return=F, plot=T)
+compute.modules.relationship(res[[4]], dt.lymp, "Deconvolution(lymph)-pathways", vertical = T, height = 15, width = 15, pval = 0.05, return=F, plot=T)
+```
+
+Survival curve by features
+
+```{r}
+clinical$Status<-ifelse(clinical$Alive. == "Alive", FALSE, TRUE)
+compute.survival.by.features(cell_groups[[1]], clinical, "survival.days", PFS_event = "Status", time_unit = "day", max_factors = 1)
 ```

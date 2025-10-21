@@ -356,3 +356,135 @@ plot_heatmap<- function(relationship_result,
   
   return(invisible(cor_matrix_t))
 }
+
+
+## Survival curve per group cells
+compute.survival.by.features <- function(features, survival.data, PFS, PFS_event, time_unit, p.value = 0.05, thres = 0.5, max_factors = Inf) {
+  library(survival)
+  n_features <- ncol(features)
+  significant_combinations <- list() # To store significant feature combinations
+  # Generate all possible combinations of the features
+  contador <- 1
+  
+  for (n in 1:min(n_features, max_factors)) {
+    combinations <- combn(1:n_features, n, simplify = FALSE)
+    
+    for (comb in combinations) {
+      # Create a formula dynamically based on the combination
+      formula <- as.formula(paste("Surv(time, status) ~", paste(colnames(features)[comb], collapse = " + ")))
+      
+      # Prepare the data for survival analysis
+      data_for_model <- data.frame("time" = survival.data[,PFS],
+                                   "status" = survival.data[,PFS_event])
+      quantiles <- quantile(features[,comb], thres)
+      
+      # Binarize the Cox model output to draw two KM lines (linear predictors are used to stratify between high-risk and low-risk groups)
+      data_for_model$coxHL <- factor(ifelse(features[,comb] >= quantiles, paste0('High_', colnames(features)[comb]), paste0("Low_", colnames(features)[comb])))
+      
+      feature_name <- colnames(features)[comb]
+      
+      # Perform Kaplan-Meier based on coxHL
+      km_fit <- survival::survfit(survival::Surv(time, status) ~ coxHL, data = data_for_model)
+      
+      pval <- survminer::surv_pvalue(km_fit, data = data_for_model)$pval
+      
+      if (!is.na(pval) && pval < p.value) {
+        significant_combinations[[contador]] <- formula
+        names(significant_combinations)[contador] <- paste0("Formula_", contador)
+        
+        ### Set colors of each curve with the correct order
+        strata_names <- gsub("coxHL=", "", names(km_fit$strata))
+        legend_labels <- strata_names
+        legend.labs <- legend_labels
+        
+        pdf(paste0("Results/SurvPlot_", names(significant_combinations)[contador]), width = 10, height = 5, onefile = FALSE)
+        print(survminer::ggsurvplot(km_fit,
+                                    data = data_for_model,
+                                    size = 1,
+                                    palette = c("#E7B800", "#2E9FDF"),
+                                    conf.int.style = "step",
+                                    pval = TRUE,
+                                    risk.table = TRUE,
+                                    risk.table.col = "strata",
+                                    legend.labs = legend.labs,
+                                    risk.table.height = 0.3,
+                                    ggtheme = theme_grey(),
+                                    title = paste0("Cox PH for ", paste("Surv(time, status) ~", paste(colnames(features)[comb], collapse = " + "))),
+                                    #subtitle = direction,
+                                    xlab = paste0("Time to death/recurrence/progression (", time_unit, ")")
+        ))
+        dev.off()
+        contador <- contador + 1
+      }
+    }
+  }
+  
+  if (length(significant_combinations) == 0) {
+    print("No significant combinations found.")
+  } else {
+    return(significant_combinations)
+  }
+}
+
+## Wilcox test 
+cell.groups.wilcox.test <- function(cell.groups, coldata, trait, pval = 0.05) {
+  sig <- c()
+  coldata[, trait] <- as.factor(coldata[, trait])
+  
+  if (length(unique(coldata[, trait])) != 2) {
+    stop("Wilcoxon test requires a binary trait (exactly two groups).")
+  }
+  
+  for (j in 1:ncol(cell.groups[[1]])) {
+    data <- data.frame(Value = cell.groups[[1]][, j], Trait = coldata[, trait])
+    
+    res.test <- stats::wilcox.test(Value ~ Trait, data = data, exact = FALSE)
+    
+    if (round(res.test$p.value, 5) <= pval) {
+      cat("Significant p-value after Wilcoxon test for", colnames(cell.groups[[1]])[j], "\n")
+      
+      # Save boxplot
+      pdf(paste0("Results/Wilcoxon_", trait, "_", colnames(cell.groups[[1]])[j], ".pdf"),
+          width = 12, height = 9)
+      print(
+        ggplot(data, aes(x = Trait, y = Value, fill = Trait)) +
+          geom_boxplot(outlier.shape = NA, alpha = 0.7, color = "gray30") +
+          geom_jitter(width = 0.15, size = 2.5, alpha = 0.8, color = "black") +
+          stat_summary(fun = median, geom = "point", shape = 23,
+                       size = 3, fill = "white") +
+          scale_fill_brewer(palette = "Set2") +
+          labs(
+            title = paste0("Wilcoxon Test - ", colnames(cell.groups[[1]])[j]),
+            subtitle = paste0("P-value: ", round(res.test$p.value, 5)),
+            x = paste0("Clinical trait: ", trait),
+            y = "Cell group score"
+          ) +
+          theme_minimal(base_size = 16) +
+          theme(
+            axis.text.x = element_text(size = 20),
+            axis.title.x = element_text(size = 20),
+            legend.title = element_text(size = 15),
+            legend.text = element_text(size = 12),
+            axis.title.y = element_text(size = 20, angle = 90),
+            plot.title = element_text(size = 20),
+            plot.subtitle = element_text(size = 15, face = "bold")
+          ) +
+          scale_fill_discrete(name = trait)
+      )
+      dev.off()
+      
+      sig <- c(sig, j)
+    }
+  }
+  # Collect significant cell groups
+  if (length(sig) == 0) {
+    message("No significant cell groups (p-value < ", pval, ") after Wilcoxon test.")
+    return(invisible(NULL))
+  } else {
+    cell.groups.sig <- list()
+    cell.groups.sig[[1]] <- cell.groups[[1]][, sig, drop = FALSE]
+    cell.groups.sig[[2]] <- cell.groups[[2]][sig]
+    cell.groups.sig[[3]] <- cell.groups[[3]][sig]
+    return(cell.groups.sig)
+  }
+}
