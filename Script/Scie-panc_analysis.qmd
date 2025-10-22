@@ -29,6 +29,7 @@ library(mixOmics)
 library(ggrepel)
 library(clusterProfiler)
 library(patchwork)
+# Change minMod = 30 in function compute.WTCNA in CellTFusion
 devtools::load_all("~/Documents/SCIE-PANC/CellTFusion-main")
 library(OmnipathR)
 library(caret)
@@ -1055,68 +1056,28 @@ res <- CellTFusion(
 counts.norm = data.frame(ADImpute::NormalizeTPM(expr_filtered, log = T)) 
 tfs = compute.TFs.activity(counts.norm, TF.collection = "CollecTRI")
 network = compute.WTCNA(tfs, corr_mod = 0.8, clustering.method = "ward.D2", return = T) 
-compute.metada.association(network[[1]], clinical.data, pval = 0.05, width = 10) 
+compute.metada.association(network[[1]], clinical.data, pval = 0.05, width = 10, "Modules-Clinical") 
 pathways = compute.pathway.activity(counts.norm)
 compute.modules.relationship(network[[1]], pathways, "Pathways_Progeny-TFs_Modules", width = 15)
 hub_tfs = identify_hub_TFs(t(tfs), network, MM_thresh = 0.8, degree_thresh = 0.9)
 compute.modules.enrichment(counts.norm, hub_tfs)
 dt = multideconv::compute.deconvolution.analysis(deconv, corr = 0.7, seed = 123) 
+deconv_subgroups = deconvolution_dictionary(dt, pathways)
 
 #Association of TFs modules with deconvolution 
-compute.modules.relationship(network[[1]], dt[[1]], "Deconvolution-TFs_Modules", vertical = T, height = 30, width = 10, pval = 0.05)
-cell_groups = construct_cell_groups(counts.norm, tfs, deconv, network, dt, pval = 0.05)
-```
-
-```{r}
-#| include: false
-clinical.data<-clinical
-rownames(clinical.data)<-clinical.data$PCSI.ID
-clinical.data<-clinical.data[,c(-1,-2,-3,-4,-5,-6,-8,-11,-12,-13,-17,-18,-19,-20,-21,-23,-27)]
-clinical.data$Best.Response<-ifelse(clinical.data$Best.response.1st.line == "CR"|clinical.data$Best.response.1st.line == "PR", "Response", "No response")
-clinical.data$Best.Response <- factor(clinical.data$Best.Response)
-clinical.data$Best.Response <- relevel(clinical.data$Best.Response, ref = "Response")
-clinical.data$Best.response.1st.line <- factor(clinical.data$Best.response.1st.line, level=c("CR","PR","SD","PD"))
-
-res <- CellTFusion(
-  raw.counts = expr_filtered,
-  normalized = TRUE,
-  coldata = clinical.data, 
-  deconv_methods = c("Quantiseq", "Epidish", "DeconRNASeq", "DWLS"), 
-  file_name = "Scie-panc",
-  corr = 0.7,
-  pval = 0.05,
-  high_corr_groups = 0.85,
-  return = FALSE
-)
-```
-
-```{r}
-# We first normalize by log2(TPM + 1)
-counts.norm = data.frame(ADImpute::NormalizeTPM(expr_filtered, log = T)) 
-tfs = compute.TFs.activity(counts.norm, TF.collection = "CollecTRI")
-network = compute.WTCNA(tfs, corr_mod = 0.8, clustering.method = "ward.D2", return = T) 
-compute.metada.association(network[[1]], clinical.data, pval = 0.05, width = 10) 
-pathways = compute.pathway.activity(counts.norm)
-compute.modules.relationship(network[[1]], pathways, "Pathways_Progeny-TFs_Modules", width = 15)
-hub_tfs = identify_hub_TFs(t(tfs), network, MM_thresh = 0.8, degree_thresh = 0.9)
-compute.modules.enrichment(counts.norm, hub_tfs)
-dt = multideconv::compute.deconvolution.analysis(deconv, corr = 0.7, seed = 123) 
-
-#Association of TFs modules with deconvolution 
-compute.modules.relationship(network[[1]], dt[[1]], "Deconvolution-TFs_Modules", vertical = T, height = 30, width = 10, pval = 0.05)
-cell_groups = construct_cell_groups(counts.norm, tfs, deconv, network, dt, pval = 0.05)
+compute.modules.relationship(network[[1]], deconv_subgroups[["Deconvolution matrix"]], "Deconvolution-TFs_Modules", vertical = T, height = 30, width = 10, pval = 0.05)
+cell_groups = construct_cell_groups(counts.norm, tfs, deconv, network, deconv_subgroups, pval = 0.05)
 ```
 
 ```{r}
 res_fisher = cell.groups.fisher.test(cell_groups, clinical.data, "Best.response.1st.line", pval = 0.01)
 # Better to use the wilcox test than Fisher
-res_anova = cell.groups.anova.test(cell_groups, clinical.data, "Best.tumor.response", pval = 0.01)
 res_anova = cell.groups.anova.test(cell_groups, clinical.data, "Best.response.1st.line", pval = 0.01)
 res_wilcox = cell.groups.wilcox.test(cell_groups, clinical.data, "Best.Response", pval = 0.01)
 tumor_response<-clinical.data
 tumor_response<-tumor_response[,"Best.tumor.response"]
 tumor_response<-as.data.frame(tumor_response)
-res_person = compute.metada.association(cell_groups[[1]], tumor_response, width = 6, height = 15)
+res_person = compute.metada.association(cell_groups[[1]], tumor_response, width = 6, height = 15, file.name="Pearson-clinical")
 # correlated with : Dendrogram_green_group_1, Dendrogram_turquoise_group_2, Dendrogram_blue_group_6, Dendrogram_blue.group_combined_5, Dendrogram_red.group_combined_7 
 
 cell_gp<-cell_groups[[1]]
@@ -1142,20 +1103,20 @@ Compute relationship between deconvolution and TF module for the myeloid and lym
 ```{r}
 # Only immune cells 
 # Lymphoid lineage
-dt.lymp<-dt[[1]]
+dt.lymp<-deconv_subgroups[["Deconvolution matrix"]]
 cols_to_keep <- grep("B\\.cells|B.naive|B.memory|NK|CD8|CD4|T.cells|Plasma", colnames(dt.lymp), value = TRUE)
 dt.lymp <- dt.lymp[, cols_to_keep]
 relationship.lymp<-compute.modules.relationship(network[[1]], dt.lymp, "Deconvolution(lymph)-TFs_Modules", vertical = T, height = 15, width = 15, pval = 0.05, return=F, plot=TRUE)
-plot_heatmap(relationship.lymp, width = 12, height = 12, lineage="lymphoid")
+#plot_heatmap(relationship.lymp, width = 12, height = 12, lineage="lymphoid")
 ```
 
 ```{r}
 # Myeloid lineage
-dt.myel<-dt[[1]]
+dt.myel<-deconv_subgroups[["Deconvolution matrix"]]
 cols_to_keep <- grep("Mast|Neutrophils|Eosinophils|Monocytes|Basophils|Macrophages", colnames(dt.myel), value = TRUE)
 dt.myel <- dt.myel[, cols_to_keep]
 relationship.myel<-compute.modules.relationship(network[[1]], dt.myel, "Deconvolution(myel)-TFs_Modules", vertical = T, height = 15, width = 15, pval = 0.05, return=F, plot=T)
-plot_heatmap(relationship.myel, width = 12, height = 12)
+#plot_heatmap(relationship.myel, width = 12, height = 12)
 ```
 
 Compute relationship between deconvolution and pathways for the myeloid and lymphoid lineage
