@@ -5,6 +5,8 @@ This repository contains all the work and analyis done on bulk RNA-seq data. The
 ## Dataset
 248 samples from patients with PDAC, tumour tissue from biopsies of primary or metastatic tumours. Bulk RNA-seq data, STAR v2.7.4a alignment to the human genome hg38.
 
+Clinical data for all the samples (mutation type, response to therapy, moffitt...) 
+
 ## Resources
 
 R and RStudio (version ≥ 4.3.x)
