@@ -1,0 +1,269 @@
+Subject,Age.at.compass,Date.enrolment.,Alive.,date.death.or.censor.,survival.days,survival.weeks,Metastatic.Disease.,Priory.curative.surgey.for.PDAC,prior.adj.chemo,First.Tx.Backbone,experimental.agent,Best.response.1st.line,Best.tumor.response,Sum.Diameter,liver.mets.at.dx,Gender,Race,Ethnicity,Biopsy.Date,Location.bx,ECOG,Ca.19.9.Value.baseline,Moffitt.latest,hrdetect_score,KRAS_mut,kras_subtype,gHRD
+COMP0001,53,17-déc.-15,Dead,03-déc.-16,352,50.2857142857143,yes,no,NA,FFX,no,PR,-30.59,85,yes,Male,White,Not Hispanic or Latino,2015 DEC 18,Liver,0,14352,classical,0.0104315049397233,G12D,balanced,no
+COMP0002,72,18-janv.-16,Dead,27-janv.-17,375,53.5714285714286,yes,no,NA,GA-gem,no,PR,-45.1,286,yes,Female,White,Not Hispanic or Latino,2016 JAN 19,Liver,1,2,classical,0.00817702531099395,NA,wt,no
+COMP0003,59,22-janv.-16,Dead,12-avr.-16,81,11.5714285714286,yes,yes,no,FFX,no,PD,163.04,46,yes,Female,Asian,Not Hispanic or Latino,2016 JAN 26,Liver,1,1468,NA,0.0124626170625346,G12D,major,no
+COMP0004,69,25-janv.-16,Dead,25-avr.-17,456,65.1428571428571,yes,no,NA,FFX,no,SD,-13.46,104,yes,Female,White,Not Hispanic or Latino,2016 JAN 27,Liver,0,26743,classical,0.0461312959559192,G12V,balanced,no
+COMP0005,60,25-janv.-16,Dead,14-oct.-16,263,37.5714285714286,yes,no,NA,FFX,no,SD,-4.2,119,yes,Female,White,Not Hispanic or Latino,2016 FEB 02,Liver,0,11785,classical,0.0165002104858258,G12V,major,no
+COMP0006,65,12-févr.-16,Alive,25-janv.-19,1078,154,yes,no,NA,FFX,no,SD,-5.71,70,no,Male,Asian,Not Hispanic or Latino,2016 FEB 16,Omentum,1,43,classical,0.000765544202079473,G12V,balanced,no
+COMP0007,52,19-févr.-16,Dead,14-avr.-16,55,7.85714285714286,yes,no,NA,GA  ,no,NE,NE,162,yes,Male,Asian,Not Hispanic or Latino,2016 FEB 22,Liver,1,51944,basal-like,0.0374000832451937,G12D,balanced,no
+COMP0008,58,26-févr.-16,Dead,10-févr.-17,350,50,yes,no,NA,GA,no,SD,-22.31,121,yes,Female,White,Not Hispanic or Latino,2016 MAR 02,Liver,1,49,classical,0.952273728501159,G12D,balanced,no
+COMP0009,57,07-mars-16,Dead,08-janv.-17,307,43.8571428571429,yes,no,NA,FFX,no,SD,-27,204,yes,Female,Asian,Unknown,2016 MAR 10,Liver,0,10,classical,0.0163984076804424,G12V,major,no
+COMP0010,71,08-mars-16,Dead,03-nov.-16,240,34.2857142857143,yes,no,NA,GA,no,SD,-0.77,130,yes,Female,White,Not Hispanic or Latino,2016 MAR 09,Liver,1,891,basal-like,0.0476370915798937,G12D,major,no
+COMP0011,54,09-mars-16,Dead,22-mars-16,13,1.85714285714286,yes,no,NA,none,no,NE,NE,185,yes,Male,White,Not Hispanic or Latino,2016 MAR 17,Liver,0,4015,basal-like,0.33662784920961,NA,wt,no
+COMP0012,66,22-mars-16,Dead,09-avr.-16,18,2.57142857142857,yes,no,NA,none,no,NE,NE,143,yes,Female,White,Hispanic or Latino,2016 MAR 23,Liver,1,3654,classical,0.0148434939980145,G12R,balanced,no
+COMP0013,63,29-mars-16,Dead,15-août-16,139,19.8571428571429,yes,no,NA,FFX,no,PD,75,76,yes,Male,White,Not Hispanic or Latino,2016 MAR 31,Liver,1,153,basal-like,0.0270290998638303,G12V,minor,no
+COMP0014,59,29-mars-16,Dead,10-janv.-19,1017,145.285714285714,yes,yes,yes,FFX,no,SD,-6.52,46,no,Male,White,Not Hispanic or Latino,2016 MAR 31,Adrenal gland,0,239,classical,0.00123301684190483,G12R,balanced,no
+COMP0015,50,22-avr.-16,Dead,26-janv.-17,279,39.8571428571429,yes,yes,yes,FFX,no,PD,25,48,yes,Female,White,Not Hispanic or Latino,2016 APR 28,Liver,0,107,basal-like,0.0192858969281577,G12V,major,no
+COMP0016,65,06-mai-16,Dead,30-déc.-16,238,34,yes,no,NA,FFX,no,SD,1.65,121,yes,Male,White,Not Hispanic or Latino,2016 MAY 11,Pancreas,0,1850,NA,0.00625271015245219,G12V,minor,no
+COMP0017,57,10-mai-16,Dead,29-avr.-17,354,50.5714285714286,no,no,NA,FFX,no,SD,4.76,42,no,Female,Asian,Not Hispanic or Latino,2016 MAY 12,Pancreas,1,1225,classical,0.00189034459972622,G12D,balanced,no
+COMP0018,52,12-mai-16,Dead,08-janv.-17,241,34.4285714285714,yes,no,NA,FFX,no,PD,44.68,94,yes,Male,White,Not Hispanic or Latino,2016 MAY 18,Liver,1,55,basal-like,0.0201207838241599,G12D,major,no
+COMP0019,58,27-mai-16,Alive,25-juil.-23,2615,373.571428571429,yes,no,NA,FFX+5FU,no,PR,-52.7,74,yes,Female,White,Not Hispanic or Latino,2016 JUN 01,Liver,1,12410,classical,0.999494765333601,G12D,balanced,no
+COMP0020,51,27-mai-16,Dead,12-déc.-16,199,28.4285714285714,yes,no,NA,FFX,no,PD,17.52,137,yes,Male,Asian,Not Hispanic or Latino,2016 JUN 02,Liver,0,1943,basal-like,0.00597389558617812,G12D,major,no
+COMP0021,64,10-juin-16,Dead,16-avr.-17,310,44.2857142857143,yes,no,NA,FFX,no,PR,-45.76,59,yes,Male,Unknown,Unknown,2016 JUN 15,Liver,1,805,basal-like,0.203665017389012,G12V,balanced,no
+COMP0023,56,04-juil.-16,Dead,28-juin-17,359,51.2857142857143,yes,no,NA,FFX,no,PR,-37.9,145,yes,Male,Unknown,Unknown,2016 JUL 07,Liver,1,131211,classical,0.0400346224392517,NA,wt,no
+COMP0025,72,22-juil.-16,Dead,07-nov.-16,108,15.4285714285714,yes,no,NA,FFX,no,NE,NE,51,yes,Female,White,Not Hispanic or Latino,2016 JUL 27,Liver,1,3560,classical,0.0076804541863961,NA,wt,no
+COMP0026,69,05-août-16,Dead,07-janv.-17,155,22.1428571428571,yes,no,NA,FFX,no,SD,-8.57,140,yes,Male,Asian,Not Hispanic or Latino,2016 AUG 10,Liver,1,48652,basal-like,0.00303495730091101,G12D,major,no
+COMP0028,58,19-août-16,Dead,06-juil.-17,321,45.8571428571429,yes,yes,no,FFX,no,PD,14,50,no,Female,White,Not Hispanic or Latino,2016 AUG 25,Omentum,1,52,classical,0.00919581669218993,NA,wt,no
+COMP0029,54,09-sept.-16,Dead,20-févr.-19,894,127.714285714286,no,no,NA,FFX,no,SD,-15,60,no,Male,White,Not Hispanic or Latino,2016 SEP 14,Pancreas,0,245,classical,0.000488938443483982,G12D,minor,no
+COMP0030,54,09-sept.-16,Dead,31-mars-17,203,29,yes,no,NA,FFX,no,SD,-4.3,93,yes,Female,Asian,Not Hispanic or Latino,2016 SEP 14,Liver,1,1,classical,0.00354553193603824,G12R,balanced,no
+COMP0032,57,15-sept.-16,Dead,16-nov.-16,62,8.85714285714286,yes,no,NA,FFX,no,PD,6.6,258,yes,Male,White,Not Hispanic or Latino,2016 SEP 21,Liver,1,16143,classical,0.0133678677181912,G12R,major,no
+COMP0033,67,23-sept.-16,Dead,03-nov.-16,41,5.85714285714286,yes,yes,no,GA,no,NE,NE,96,yes,Male,White,Not Hispanic or Latino,2016 SEP 28,Liver,1,152,classical,0.00196758079847892,G12V,balanced,no
+COMP0034,53,30-sept.-16,Dead,17-avr.-17,199,28.4285714285714,yes,no,NA,FFX,no,PD,24.55,110,yes,Female,White,Not Hispanic or Latino,2016 OCT 06,Liver,1,398,basal-like,0.203739722322952,G12D,balanced,no
+COMP0035,74,17-oct.-16,Dead,03-févr.-19,839,119.857142857143,no,no,NA,FFX,no,PR,-33.33,36,no,Male,White,Not Hispanic or Latino,2016 OCT 19,Pancreas,1,1055,classical,0.000365694616815975,G12D,balanced,no
+COMP0036,35,17-oct.-16,Dead,17-août-17,304,43.4285714285714,no,no,NA,FFX,no,SD,-19.22,78,no,Male,Asian,Not Hispanic or Latino,2016 OCT 26,Pancreas,1,1888,classical,0.000411793119174494,G12V,balanced,no
+COMP0037,52,28-oct.-16,Dead,27-juil.-18,637,91,yes,no,NA,FFX,no,PR,-58.3,96,yes,Female,White,Not Hispanic or Latino,2016 NOV 03,Liver,1,138198,classical,0.999814254703899,G12V,balanced,BRCA2(g)
+COMP0038,71,18-nov.-16,Dead,10-juil.-17,234,33.4285714285714,yes,no,NA,FFX,no,SD,7.45,94,yes,Male,White,Not Hispanic or Latino,2016 NOV 23,Liver,0,10881,classical,0.0155829603059509,G12D,minor,no
+COMP0041,62,05-déc.-16,Dead,28-avr.-17,144,20.5714285714286,no,no,NA,FFX,no,SD,1,47,no,Male,White,Not Hispanic or Latino,2016 DEC 08,Pancreas,1,50,classical,0.00264121345045184,G12D,balanced,no
+COMP0042,65,23-déc.-16,Dead,29-juin-17,188,26.8571428571429,no,no,NA,FFX,no,SD,-17.54,57,no,Female,Black or African American,Not Hispanic or Latino,2017 JAN 05,Pancreas,1,5287,classical,0.00247359487125481,G12D,balanced,no
+COMP0043,72,23-déc.-16,Dead,11-nov.-17,323,46.1428571428571,no,no,NA,FFX,no,SD,-20,40,no,Male,White,Not Hispanic or Latino,2017 JAN 04,Pancreas,1,40,classical,0.913115089774387,G12V,balanced,no
+COMP0044,66,13-janv.-17,Dead,27-sept.-19,987,141,yes,no,NA,FFX,no,PR,-44.9,29,yes,Female,White,Not Hispanic or Latino,2017 JAN 19,Pancreas,1,37198,classical,0.00223625367050365,G12R,balanced,no
+COMP0045,67,13-janv.-17,Dead,01-juin-17,139,19.8571428571429,yes,no,NA,FFX,no,PD,34.38,64,yes,Male,White,Not Hispanic or Latino,2017 JAN 18,Liver,1,68,basal-like,0.0190462237824399,G12V,minor,no
+COMP0046,52,20-janv.-17,Dead,29-mars-18,433,61.8571428571429,yes,no,NA,FFX,no,SD,-11.1,63,yes,Male,White,Not Hispanic or Latino,2017 JAN 25,Liver,1,608,classical,0.0339903404425911,G12V,balanced,no
+COMP0047,58,27-janv.-17,Dead,12-oct.-17,258,36.8571428571429,yes,no,NA,FFX,no,PR,-54.55,176,yes,Male,Asian,Not Hispanic or Latino,2017 FEB 01,Liver,1,5484,classical,0.148663764407787,NA,wt,no
+COMP0048,70,03-févr.-17,Dead,05-mai-17,91,13,yes,no,NA,FFX,no,PD,7,102,yes,Male,White,Not Hispanic or Latino,2017 FEB 08,Liver,1,104,basal-like,0.000941221808880939,G12R,major,no
+COMP0049,68,17-févr.-17,Dead,27-janv.-18,344,49.1428571428571,no,no,NA,FFX,no,SD,-26.9,52,no,Female,Unknown,Not Hispanic or Latino,2017 FEB 22,Pancreas,1,4676,classical,0.0368797369145385,G12D,balanced,no
+COMP0050,63,17-févr.-17,Dead,20-août-17,184,26.2857142857143,yes,no,NA,GA,no,SD,-5.11,137,yes,Male,White,Hispanic or Latino,2017 FEB 23,Liver,1,22987,classical,0.0438655689957676,G12D,minor,no
+COMP0052,58,03-mars-17,Dead,19-mars-17,16,2.28571428571429,yes,no,NA,none,no,NE,NE,104,yes,Female,White,Not Hispanic or Latino,2017 MAR 09,Liver,1,143484,classical,0.999625567053177,G12D,balanced,no
+COMP0056,62,24-mars-17,Dead,11-juin-18,444,63.4285714285714,yes,no,NA,FFX,no,PR,-54.5,55,yes,Male,Asian,Not Hispanic or Latino,2017 MAR 29,Liver,1,17,classical,0.960428249686364,G12V,minor,no
+COMP0057,68,31-mars-17,Dead,30-oct.-17,213,30.4285714285714,yes,no,NA,FFX,no,SD,-5.61,107,yes,Female,White,Not Hispanic or Latino,2017 APR 05,Liver,1,70235,classical,0.00211522738816448,NA,wt,no
+COMP0058-G,67,10-avr.-17,Dead,14-août-19,856,122.285714285714,yes,no,NA,GA  ,no,PR,-50.8,124,yes,Female,White,Not Hispanic or Latino,2017 APR 12,Liver,1,3339,classical,0.00453493248734007,G12D,major,no
+COMP0059,68,26-avr.-17,Dead,15-oct.-17,172,24.5714285714286,no,no,NA,GA,no,PR,-41.3,46,no,Female,Asian,Not Hispanic or Latino,2017 APR 27,Pancreas,1,3001,classical,0.081937424976534,G12V,balanced,no
+COMP0060,71,28-avr.-17,Dead,31-mai-17,33,4.71428571428571,yes,no,NA,GA,yes,NE,NE,99,yes,Male,Asian,Not Hispanic or Latino,2017 MAY 04,Abdominal wall,1,3890,classical,0.00671964792540581,G12D,balanced,no
+COMP0061,29,28-avr.-17,Dead,25-nov.-17,211,30.1428571428571,yes,no,NA,GA,yes,PR,-37.3,102,yes,Female,White,Not Hispanic or Latino,2017 MAY 03,Liver,1,5523,classical,0.000674105439540062,G12D,minor,no
+COMP0063,65,10-mai-17,Dead,15-août-17,97,13.8571428571429,yes,no,NA,GA,no,PD,2.5,129,yes,Female,Unknown,Unknown,2017 MAY 11,Liver,1,55175,classical,0.00252052908376899,G12V,major,no
+COMP0064-G,73,12-mai-17,Dead,21-janv.-18,254,36.2857142857143,yes,no,NA,GA,no,SD,-18,85,yes,Female,Black or African American,Not Hispanic or Latino,2017 MAY 24,Liver,1,4923,basal-like,0.00792432162073583,G12D,major,no
+COMP0065-G,66,15-mai-17,Dead,24-janv.-19,619,88.4285714285714,yes,no,NA,GA,yes,PR,-42.6,115,yes,Female,White,Not Hispanic or Latino,2017 MAY 17,Liver,0,2956,basal-like,0.0015760340593335,G12D,minor,no
+COMP0066,58,16-mai-17,Dead,18-sept.-17,125,17.8571428571429,yes,no,NA,GA,yes,SD,-6.7,30,yes,Male,Asian,Not Hispanic or Latino,2017 MAY 18,Omentum,1,1,classical,0.0204732030827816,G12D,balanced,no
+COMP0067-G,65,19-mai-17,Dead,21-sept.-17,125,17.8571428571429,yes,no,NA,FFX,no,SD,-26.2,202,yes,Male,White,Not Hispanic or Latino,2017 MAY 24,Liver,1,12584,basal-like,0.0032757460274145,G12D,minor,no
+COMP0068,72,06-juin-17,Dead,17-août-17,72,10.2857142857143,yes,no,NA,GA,yes,SD,-5.6,71,yes,Female,White,Not Hispanic or Latino,2017 JUN 08,Pancreas,0,1903,classical,0.998548654004151,G12V,balanced,yes
+COMP0069,46,12-juin-17,Dead,30-juin-18,383,54.7142857142857,yes,no,NA,FFX,no,SD,-20.9,67,yes,Female,Asian,Not Hispanic or Latino,2017 JUN 14,Liver,1,7115,classical,0.00562297364876694,G12R,minor,no
+COMP0071,50,15-juin-17,Dead,12-févr.-18,242,34.5714285714286,yes,no,NA,GA ,no,PD,14.1,64,yes,Male,White,Not Hispanic or Latino,2017 JUN 15,Liver,1,297,classical,0.20389646577268,G12V,major,no
+COMP0072,59,15-juin-17,Dead,22-mars-18,280,40,yes,no,NA,GA ,no,PR,-30.3,89,yes,Male,White,Not Hispanic or Latino,2017 JUN 16,Pancreas,1,1,classical,0.4739780021246,Q61K,balanced,no
+COMP0073-G,69,19-juin-17,Dead,11-sept.-18,449,64.1428571428571,no,no,NA,GA  ,no,SD,-23.2,56,no,Male,White,Not Hispanic or Latino,2017 JUN 22,Pancreas,1,285,classical,0.0242619847247013,G12C,minor,no
+COMP0074,62,23-juin-17,Dead,18-sept.-17,87,12.4285714285714,yes,no,NA,GA,no,PD,25.93,135,yes,Male,White,Not Hispanic or Latino,2017 JUN 26,Liver,1,2,basal-like,0.024568629328794,Q61H,minor,no
+COMP0075,50,27-juin-17,Dead,13-févr.-18,231,33,yes,no,NA,FFX,no,PR,-53.3,135,yes,Male,White,Not Hispanic or Latino,2017 JUN 28,Liver,0,372,classical,0.00345537763654012,G12D,major,no
+COMP0076,66,29-juin-17,Dead,03-sept.-17,66,9.42857142857143,yes,no,NA,GA,yes,PD,1.6,376,yes,Female,White,Not Hispanic or Latino,2017 JUN 29,Pancreas,1,505,classical,0.000780127485319461,G12R,minor,no
+COMP0077-G,56,04-juil.-17,Dead,13-oct.-17,101,14.4285714285714,yes,yes,yes,FFX,no,PD,106.7,30,yes,Male,White,Not Hispanic or Latino,2017 JUL 05,Liver,1,190,basal-like,0.00108092390831167,G12R,major,no
+COMP0078,73,05-juil.-17,Dead,05-mars-19,608,86.8571428571429,yes,no,NA,GA,no,SD,-23.21,56,yes,Female,Asian,Not Hispanic or Latino,2017 JUL 06,Liver,1,106,classical,0.0033663389293125,G12D,balanced,no
+COMP0079,72,07-juil.-17,Dead,06-mars-18,242,34.5714285714286,yes,no,NA,GA,yes,SD,-2.33,43,yes,Female,White,Not Hispanic or Latino,2017 JUL 10,Pancreas,1,95,classical,0.0376319429924324,G12D,minor,no
+COMP0080,73,25-juil.-17,Dead,03-janv.-18,162,23.1428571428571,yes,no,NA,GA ,no,SD,5.56,18,yes,Female,White,Not Hispanic or Latino,2017 JUL 26,Pancreas,1,512,classical,0.000452931188127737,Q61H,minor,no
+COMP0081,64,31-juil.-17,Dead,09-nov.-17,101,14.4285714285714,yes,no,NA,GA,no,NE,NE,194,yes,Male,Asian,Not Hispanic or Latino,2017 AUG 2,Liver,1,202,classical,0.0264009015580602,G12D,balanced,no
+COMP0083,54,03-août-17,Dead,11-sept.-17,39,5.57142857142857,yes,no,NA,GA,yes,NE,NE,185,yes,Female,White,Not Hispanic or Latino,2017 AUG 04,Liver,1,31115,classical,0.000898704561233795,G12V,minor,no
+COMP0084-G,62,21-août-17,Dead,27-mars-18,218,31.1428571428571,yes,no,NA,FFX,no,PD,1.4,70,yes,Male,White,Not Hispanic or Latino,2017 AUG 23,Liver,1,9,classical,0.0769242436561511,G12V,minor,no
+COMP0085,69,23-août-17,Dead,13-nov.-17,82,11.7142857142857,yes,yes,yes,FFX ,no,NE,NE,66,yes,Female,White,Not Hispanic or Latino,2017 AUG 24,Liver,1,8060,classical,0.0151674661832037,G12V,minor,no
+COMP0086,60,29-août-17,Dead,06-juil.-18,311,44.4285714285714,yes,no,NA,GA,no,SD,-11.4,79,yes,Male,Unknown,Not Hispanic or Latino,2017 AUG 30,Liver,1,2723,basal-like,0.000538923268913221,G12D,major,no
+COMP0087-G,74,31-août-17,Dead,05-mai-19,612,87.4285714285714,yes,no,NA,GA,no,PR,-34.18,79,yes,Female,White,Not Hispanic or Latino,2017 SEP 11,Pancreas,1,4747,classical,0.0113948637667744,G12D,balanced,no
+COMP0088-G,66,31-août-17,Dead,30-janv.-18,152,21.7142857142857,yes,no,NA,none,no,NE,NE,71,no,Female,White,Not Hispanic or Latino,2017 SEP 11,Pancreas,0,510,classical,0.00553227887636081,G12D,minor,no
+COMP0089-G,63,31-août-17,Dead,30-juin-18,303,43.2857142857143,yes,no,NA,FFX,no,PR,-39.7,93,no,Male,White,Not Hispanic or Latino,2017 SEP 07,Peritoneum,1,418,classical,0.00322806311823147,G12D,minor,no
+COMP0090,67,05-sept.-17,Dead,22-déc.-17,108,15.4285714285714,yes,no,NA,GA,yes,PR,-30.92,152,yes,Male,White,Not Hispanic or Latino,2017 SEP 06,Liver,1,41571,classical,0.167141999798759,G12V,balanced,no
+COMP0091-G,67,15-sept.-17,Dead,24-juin-18,282,40.2857142857143,no,no,NA,FFX,no,SD,-15,38,no,Male,White,Not Hispanic or Latino,2017 SEP 20,Pancreas,0,230,classical,0.000408571068313919,G12D,balanced,no
+COMP0092-G,50,15-sept.-17,Dead,11-juin-18,269,38.4285714285714,yes,no,NA,FFX,no,PR,-35.5,180,yes,Male,White,Hispanic or Latino,2017 SEP 21,Liver,1,13436,classical,0.00578196536630587,G12D,minor,no
+COMP0093,81,21-sept.-17,Dead,21-sept.-18,365,52.1428571428571,yes,no,NA,GA,no,SD,5.4,92,yes,Male,Asian,Not Hispanic or Latino,2017 NOV 15,Liver,1,2,classical,0.0152689280408615,G12R,minor,no
+COMP0094-G,73,21-sept.-17,Dead,22-oct.-17,31,4.42857142857143,yes,no,NA,GA,no,NE,NE,130,yes,Male,White,Not Hispanic or Latino,2017 SEP 28,Liver,1,5984,classical,0.592661811269668,G12D,balanced,no
+COMP0096-G,61,29-sept.-17,Dead,26-mars-18,178,25.4285714285714,yes,no,NA,GA,no,PD,50.8,258,yes,Female,Asian,Not Hispanic or Latino,2017 OCT 04,Liver,1,71956,basal-like,0.994374797341687,G12D,major,no
+COMP0097,56,10-oct.-17,Dead,08-juin-18,241,34.4285714285714,yes,no,NA,FFX,no,PD,90.9,11,yes,Male,White,Not Hispanic or Latino,2017 OCT 11,Liver,1,285,classical,0.0246142482178869,NA,wt,no
+COMP0098,47,11-oct.-17,Dead,26-avr.-18,197,28.1428571428571,yes,no,NA,GA ,no,SD,-16.4,73,yes,Female,White,Not Hispanic or Latino,2017 OCT 12,Liver,0,106,classical,0.00283510136173631,G12D,balanced,no
+COMP0100,77,20-oct.-17,Dead,07-nov.-17,18,2.57142857142857,yes,no,NA,none,no,NE,NE,244,yes,Male,White,Not Hispanic or Latino,2017 OCT 23,Liver,1,1830,basal-like,0.00108802491319657,G12D,minor,no
+COMP0101,46,20-oct.-17,Dead,26-juin-18,249,35.5714285714286,yes,no,NA,GA,yes,SD,-15,20,no,Female,Asian,Not Hispanic or Latino,2017 OCT 23,Pancreas,1,5865,classical,0.00247749825574781,G12D,minor,no
+COMP0102-G,71,20-oct.-17,Dead,30-nov.-18,406,58,no,no,NA,GA,no,SD,-11.1,63,no,Female,White,Not Hispanic or Latino,2017 OCT 27,Pancreas,0,310,classical,0.00204796538366376,Q61H,minor,no
+COMP0104,65,20-nov.-17,Dead,02-mars-18,102,14.5714285714286,yes,yes,yes,FFX,no,NE,NE,87,yes,Male,Asian,Not Hispanic or Latino,2017 NOV 22,Liver,1,8672,classical,0.107292669751524,G13D,minor,no
+COMP0105,63,22-nov.-17,Dead,01-mars-19,464,66.2857142857143,yes,no,NA,FFX,no,PR,-36.3,102,yes,Male,White,Not Hispanic or Latino,2017 NOV 23,Liver,1,5464,classical,0.999474365265163,G12V,balanced,yes
+COMP0106,66,29-nov.-17,Dead,05-déc.-18,371,53,yes,no,NA,GA,no,SD,-14.1,195,yes,Female,White,Not Hispanic or Latino,2017 NOV 30,Liver,0,6810,classical,0.034727580360122,G12D,major,no
+COMP0107,64,05-déc.-17,Dead,20-avr.-21,1232,176,yes,no,no,GA,yes,PR,-52.3,132,no,Male,Unknown,Unknown,2017 DEC 06,Pancreas,1,363,classical,0.0529064730847719,G12R,balanced,no
+COMP0108,66,06-déc.-17,Dead,26-déc.-18,385,55,yes,no,NA,FFX,no,SD,-19.3,57,yes,Male,White,Not Hispanic or Latino,2017 DEC 07,Pancreas,0,4364,basal-like,0.122952490650092,G12D,balanced,no
+COMP0109-G,64,12-déc.-17,Dead,26-sept.-18,288,41.1428571428571,no,no,NA,FFX,no,PD,-8.9,45,no,Female,White,Not Hispanic or Latino,2017 DEC 14,Pancreas,1,missing,classical,0.000195964497158829,G12V,minor,no
+COMP0110,53,12-déc.-17,Dead,14-avr.-18,123,17.5714285714286,yes,no,no,GA,yes,PD,15,123,yes,Male,White,Not Hispanic or Latino,2017 DEC 13,Peritoneum,1,2,classical,0.00292496692832734,G12V,minor,no
+COMP0111-G,44,21-déc.-17,Dead,04-août-18,226,32.2857142857143,yes,no,NA,FFX,no,PD,23.3,30,yes,Male,White,Not Hispanic or Latino,2017 DEC 27,Liver,1,233,basal-like,0.00732161395370062,Q61H,minor,no
+COMP0112,58,27-déc.-17,Dead,24-déc.-18,362,51.7142857142857,yes,no,no,GA,yes,SD,-6.8,88,yes,Male,White,Not Hispanic or Latino,2017 DEC 28,Liver,0,7,basal-like,0.956419818381653,G12D,minor,no
+COMP0113-G,58,03-janv.-18,Dead,04-juin-18,152,21.7142857142857,yes,no,NA,FFX,no,SD,8.5,152,yes,Male,Asian,Not Hispanic or Latino,2018 JAN 05,Liver,0,6144,classical,0.182373493517507,G12V,minor,no
+COMP0114,67,09-janv.-18,Dead,05-oct.-18,269,38.4285714285714,yes,no,NA,GA,yes,SD,15,92,yes,Female,Asian,Not Hispanic or Latino,2018 JAN 10,Liver,1,14740,classical,0.000155606705420168,G12D,minor,no
+COMP0115,66,10-janv.-18,Dead,07-mars-18,56,8,yes,no,NA,none,no,NE,NE,77,yes,Male,White,Not Hispanic or Latino,2018 JAN 11,Liver,1,4180,classical,0.002531029900116,G12V,balanced,no
+COMP0116-G,61,15-janv.-18,Dead,21-juin-18,157,22.4285714285714,yes,no,no,FFX ,no,SD,17.2,87,no,Male,White,Not Hispanic or Latino,2018 JAN 18,Pancreas,1,968,basal-like,0.0429145445005067,G12R,balanced,no
+COMP0118,65,17-janv.-18,Dead,23-mars-20,796,113.714285714286,no,no,NA,FFX,no,PR,-42.8,21,no,Female,White,Not Hispanic or Latino,2018 JAN 18,Pancreas,0,1,classical,0.0123356921281638,G12R,balanced,no
+COMP0119-G,72,29-janv.-18,Dead,08-sept.-18,222,31.7142857142857,yes,no,NA,GA,no,PR,-38.82,85,no,Male,White,Not Hispanic or Latino,2018 JAN 31,Peritoneum,1,1928,classical,0.00672197585548656,G12V,balanced,no
+COMP0120,57,31-janv.-18,Dead,21-juil.-18,171,24.4285714285714,yes,no,NA,FFX,no,PD,9.6,83,yes,Female,White,Not Hispanic or Latino,2018 FEB 01,Liver,1,1637,classical,0.00660948890775117,G12V,major,no
+COMP0121-G,59,05-févr.-18,Dead,21-mars-18,44,6.28571428571429,no,no,NA,none,no,NE,NE,36,no,Female,Asian,Not Hispanic or Latino,2018 FEB 07,Pancreas,0,1074,classical,0.00735192619681615,G12D,balanced,no
+COMP0122-G,62,05-févr.-18,Dead,12-mars-18,35,5,yes,no,NA,FFX ,no,NE,NE,220,yes,Male,White,Not Hispanic or Latino,2018 FEB 08,Liver,1,30439,classical,0.0451818332334241,G12R,major,no
+COMP0123-P,64,07-févr.-18,Dead,24-déc.-18,320,45.7142857142857,yes,no,NA,FFX,no,PR,-41.5,130,yes,Male,White,Not Hispanic or Latino,2018 FEB 08,Liver,0,31539,classical,0.622214354761183,G12V,minor,no
+COMP0126,42,06-mars-18,Alive,25-juil.-23,1967,281,yes,no,NA,FFX,no,SD,-27,70,yes,Female,Asian,Not Hispanic or Latino,2018 MAR 07,Liver,0,437,classical,0.999650391635326,G12D,balanced,BRCA2(g)
+COMP0127,72,06-mars-18,Dead,26-mai-18,81,11.5714285714286,yes,no,NA,GA,no,PD,72.7,110,yes,Female,White,Not Hispanic or Latino,2018 MAR 08,Omentum,1,1573,classical,0.00317541398549616,G12D,balanced,no
+COMP0128,65,28-févr.-18,Dead,11-oct.-18,225,32.1428571428571,no,no,NA,GA,no,SD,16.9,71,no,Male,White,Not Hispanic or Latino,2018 MAR 08,Pancreas,1,3929,NA,0.00270371898455921,G12D,minor,no
+COMP0129-P,75,20-mars-18,Dead,02-mai-20,774,110.571428571429,yes,no,NA,GA,no,PR,-43.1,51,yes,Male,Asian,Not Hispanic or Latino,2018 MAR 21,Liver,1,12888,classical,0.00146151960524911,G12V,balanced,no
+COMP0130,52,21-mars-18,Dead,10-mars-19,354,50.5714285714286,yes,no,NA,GA,no,PR,-60.4,76,yes,Male,White,Not Hispanic or Latino,2018 MAR 22,Liver,0,59372,classical,0.0101721648478979,G12V,minor,no
+COMP0131-M,71,29-mars-18,Alive,30-sept.-23,2011,287.285714285714,yes,no,NA,GA,no,PR,-77.78,72,yes,Female,White,Not Hispanic or Latino,2018 APR 4,Liver,0,20242.9,classical,0.0940978485894006,G12D,minor,no
+COMP0132-P,76,04-avr.-18,Dead,01-sept.-19,515,73.5714285714286,yes,no,NA,GA,no,PR,-59.7,253,yes,Female,White,Not Hispanic or Latino,2018 APR 04,Liver,1,405,classical,0.873692106021113,G12R,minor,no
+COMP0133-P,63,04-avr.-18,Dead,09-juil.-19,461,65.8571428571429,yes,no,NA,GA,yes,SD,-16.7,78,no,Male,White,Not Hispanic or Latino,2018 APR 05,Pancreas,0,139,classical,0.0016858058683839,G12V,minor,no
+COMP0134-P,70,12-avr.-18,Dead,30-juil.-18,109,15.5714285714286,yes,no,NA,GA,no,PD,-1.9,54,no,Male,White,Not Hispanic or Latino,2018 APR 09,Lung,1,1441,NA,0.0211536486344474,G12D,balanced,no
+COMP0136-P,65,10-avr.-18,Dead,30-mars-20,720,102.857142857143,no,no,no,FFX,no,SD,0,46,no,Male,White,Not Hispanic or Latino,2018 APR 11,Pancreas,0,799,classical,0.00231201120248837,G12D,balanced,no
+COMP0137-G,65,12-avr.-18,Dead,20-déc.-18,252,36,yes,no,NA,GA,no,SD,-6.7,30,yes,Female,White,Not Hispanic or Latino,2018 APR 12,Liver,0,608,classical,0.0111056960603931,G12D,balanced,no
+COMP0138-P,71,11-avr.-18,Dead,12-juin-18,62,8.85714285714286,yes,no,NA,GA,no,PD,32.7,104,yes,Male,Asian,Not Hispanic or Latino,2018 APR 12,Liver,1,3356,classical,0.00186749678053197,G12R,minor,no
+COMP0139-M,64,12-avr.-18,Dead,13-mai-20,762,108.857142857143,no,no,NA,GA,no,SD,-22.22,45,no,Female,Asian,Not Hispanic or Latino,2018 APR 17,Pancreas,1,240.3,NA,0.0239532417256651,G12V,balanced,no
+COMP0140-P,63,25-avr.-18,Dead,09-janv.-21,990,141.428571428571,no,no,NA,FFX,no,PR,-38.8,36,no,Female,White,Not Hispanic or Latino,2018 MAY 03,Pancreas,0,392,classical,0.0327978081883779,G12D,minor,no
+COMP0141-G,69,01-mai-18,Dead,10-sept.-19,497,71,yes,yes,yes,cisplatin/gemcitabine,no,SD,-22.2,27,yes,Male,White,Not Hispanic or Latino,2018 MAY 02,Liver,0,48849,classical,0.999987862159296,NA,wt,BRCA1(g)
+COMP0143-M,70,03-mai-18,Dead,30-juin-18,58,8.28571428571429,yes,no,NA,none,no,NE,NE,110,yes,Female,White,Not Hispanic or Latino,2018 MAY 10,Liver,0,4411,classical,0.0396305857483982,G12D,minor,no
+COMP0145-G,67,03-mai-18,Dead,15-mars-19,316,45.1428571428571,yes,no,NA,GA,yes,SD,10,51,yes,Male,White,Not Hispanic or Latino,2018 MAY 04,Pancreas,1,44,classical,0.0581043090587786,G12D,balanced,no
+COMP0146,42,04-mai-18,Dead,14-juin-21,1137,162.428571428571,no,no,NA,FFX,no,SD,-25,36,no,Male,Black or African American,Not Hispanic or Latino,2018 MAY 09,Pancreas,0,585,classical,0.601644916614702,Q61R,balanced,no
+COMP0147,63,10-mai-18,Dead,06-juin-19,392,56,yes,no,NA,GA,yes,PR,-61.5,52,yes,Male,White,Not Hispanic or Latino,2018 MAY 16,Liver,0,4568,classical,0.00241815358718287,G12D,minor,no
+COMP0148-G,67,15-mai-18,Dead,14-juil.-18,60,8.57142857142857,yes,no,NA,none,no,NE,NE,141,yes,Female,Asian,Not Hispanic or Latino,2018 MAY 17,Liver,1,2577,classical,0.0312451834430451,G12D,major,no
+COMP0149-G,72,15-mai-18,Dead,10-juin-18,26,3.71428571428571,yes,no,NA,GA,no,NE,NE,85,yes,Male,Asian,Not Hispanic or Latino,2018 MAY 17,Liver,1,missing,classical,0.0178478458458355,G12D,balanced,no
+COMP0151-M,64,28-mai-18,Dead,08-nov.-18,164,23.4285714285714,yes,no,no,GA,yes,PR,-56.16,73,no,Male,White,Not Hispanic or Latino,2018 JUN 05,Pancreas,1,15.7,classical,0.619688409195364,G12D,balanced,no
+COMP0152-G,67,05-juin-18,Dead,20-févr.-20,625,89.2857142857143,yes,no,NA,GA,no,PR,-32.2,155,yes,Male,Black or African American,Not Hispanic or Latino,2018 JUN 06,Peritoneum,1,21,classical,0.0400106033023779,G12V,minor,no
+COMP0153-P,77,11-juin-18,Dead,26-sept.-19,472,67.4285714285714,yes,no,NA,FFX,no,PR,-58.2,206,yes,Male,White,Not Hispanic or Latino,2018 JUN 13,Liver,1,49,classical,0.999995334306655,G12R,balanced,BRCA1(g)
+COMP0154-G,62,13-juin-18,Dead,13-août-18,61,8.71428571428571,yes,no,NA,Gemcitabine,no,PD,48.2,83,yes,Female,White,Not Hispanic or Latino,2018 JUN 14,Liver,1,15112,classical,0.401127655974279,G12D,major,no
+COMP0155-M,71,14-juin-18,Dead,01-oct.-20,840,120,yes,yes,yes,GA,no,PR,-45.8,48,yes,Female,White,Not Hispanic or Latino,2018 JUN 20,Liver,0,12.9,NA,0.0663559204204093,G12V,minor,no
+COMP0156-P,75,18-juin-18,Dead,25-févr.-20,617,88.1428571428571,yes,no,NA,GA,no,SD,-22.5,71,no,Male,White,Not Hispanic or Latino,2018 JUN 22,Peritoneum,1,99,classical,0.299135733166558,G12R,balanced,no
+COMP0159-G,66,22-juin-18,Dead,10-juil.-18,18,2.57142857142857,yes,no,NA,none,no,NE,NE,145,yes,Female,White,Not Hispanic or Latino,2018 JUN 27,Liver,1,131,basal-like,0.0000494532270560404,G12V,balanced,no
+COMP0161-K,62,27-juin-18,Dead,26-sept.-19,456,65.1428571428571,yes,no,NA,FFX,no,PD,7.54,53,yes,Male,White,Not Hispanic or Latino,2018 JUN 28,Liver,1,881,classical,0.0352784941826307,NA,wt,no
+COMP0162-P,73,06-juil.-18,Dead,03-sept.-18,59,8.42857142857143,yes,no,NA,FFX,no,NE,NE,84,yes,Male,White,Not Hispanic or Latino,2018 JUL 11,Liver,1,1085,basal-like,0.000378735084468304,G12D,minor,no
+COMP0163-M,69,11-juil.-18,Dead,10-mai-19,303,43.2857142857143,yes,yes,yes,FFX,no,PD,34.6,26,yes,Male,White,Not Hispanic or Latino,2018 JUL 24,Liver,0,2565,basal-like,0.26945937125577,G12V,major,no
+COMP0164-P,59,23-juil.-18,Dead,29-mars-19,249,35.5714285714286,yes,no,NA,GA,yes,PR,-42.9,119,yes,Male,White,Not Hispanic or Latino,2018 JUL 25,Liver,0,3056,classical,0.431046628613605,NA,wt,no
+COMP0167-P,77,31-juil.-18,Dead,06-mai-19,279,39.8571428571429,yes,no,NA,GA,no,SD,1.4,69,yes,Male,Asian,Not Hispanic or Latino,2018 AUG 01,Liver,1,1,basal-like,0.000619897949763422,Q61H,major,no
+COMP0168-P,73,07-août-18,Dead,16-août-18,9,1.28571428571429,yes,no,NA,none,no,NE,NE,293,yes,Male,Asian,Not Hispanic or Latino,2018 AUG 08,Liver,1,34,basal-like,0.994342653446684,G12R,major,no
+COMP0169-M,45,09-août-18,Dead,03-août-20,725,103.571428571429,yes,yes,yes,GA,no,PR,-48.5,35,no,Male,White,Not Hispanic or Latino,2018 AUG 10,Retroperitoneum,0,1,NA,0.00427344597362886,G12V,minor,no
+COMP0170-G,79,10-août-18,Dead,26-sept.-18,47,6.71428571428571,yes,no,NA,none,no,NE,NE,138,yes,Male,White,Not Hispanic or Latino,2018 AUG 15,Liver and intrahepatic duct,1,305453,classical,0.0185144079748769,G12D,balanced,no
+COMP0171-G,55,13-août-18,Dead,20-nov.-19,464,66.2857142857143,yes,no,NA,FFX,no,PR,-50,40,yes,Female,Asian,Not Hispanic or Latino,2018 AUG 16,Pancreas,1,2706,classical,0.000686894144220374,G12D,balanced,no
+COMP0172-G,71,21-août-18,Dead,14-sept.-19,389,55.5714285714286,yes,no,NA,FFX,no,SD,-8,50,no,Male,White,Not Hispanic or Latino,2018 AUG 23,Omentum,0,1991,classical,0.000576172025256628,G12R,balanced,no
+COMP0173-K,74,24-août-18,Dead,08-janv.-19,137,19.5714285714286,yes,no,NA,Gemcitabine,no,NE,NE,151,yes,Female,White,Not Hispanic or Latino,2018 AUG 27,Liver,0,2853,classical,0.238506001263699,NA,wt,no
+COMP0174-P,59,29-août-18,Dead,10-oct.-18,42,6,yes,no,NA,none,no,NE,NE,145,yes,Female,Asian,Not Hispanic or Latino,2018 AUG 30,Liver,1,1,basal-like,0.00391899687553747,G12C,major,no
+COMP0175-K,64,30-août-18,Dead,28-nov.-18,90,12.8571428571429,yes,yes,UK,FFX,no,NE,NE,144,no,Female,White,Not Hispanic or Latino,2018 AUG 31,Liver,0,37063,classical,0.0109187624017558,G12V,balanced,no
+COMP0178-P,58,14-sept.-18,Dead,06-déc.-18,83,11.8571428571429,yes,no,NA,GA,no,NE,NE,50,no,Male,White,Not Hispanic or Latino,2018 SEP 20,Omentum,0,2617,classical,0.000275215257391383,G12D,balanced,no
+COMP0180-M,72,21-sept.-18,Dead,07-déc.-19,442,63.1428571428571,yes,no,NA,FFX,no,SD,-19.3,119,yes,Male,Black or African American,Not Hispanic or Latino,2018 SEP 25,Liver,0,110.6,classical,0.031924497800609,G12R,balanced,no
+COMP0181-P,57,27-sept.-18,Dead,04-déc.-19,433,61.8571428571429,yes,no,NA,FFX,no,SD,-10.3,58,no,Female,Asian,Not Hispanic or Latino,2018 OCT 03,Pancreas,1,2629,classical,0.0173415764612584,G12V,minor,no
+COMP0182-P,37,28-sept.-18,Dead,01-févr.-20,491,70.1428571428571,yes,yes,yes,FFX,no,NA,NA,94,no,Female,Not Reported,Not Hispanic or Latino,2018 OCT 04,Abdominal wall,0,179,NA,0.00165629857869854,G12V,balanced,no
+COMP0183-P,59,04-oct.-18,Dead,15-juil.-19,284,40.5714285714286,yes,no,NA,FFX,no,SD,-2.3,87,yes,Male,White,Not Hispanic or Latino,2018 OCT 10,Peritoneum,1,19573,classical,0.943437166263366,NA,wt,no
+COMP0184-K,69,09-oct.-18,Dead,08-juin-19,242,34.5714285714286,yes,no,NA,GA,no,SD,-22.9,74,yes,Female,White,Not Hispanic or Latino,2018 OCT 09,Liver,0,66376,classical,0.0450371264583201,Q61L,major,no
+COMP0185-P,61,15-oct.-18,Dead,22-janv.-19,99,14.1428571428571,yes,yes,yes,cis/gem,no,SD,13.3,23,yes,Female,White,Not Hispanic or Latino,2018 OCT 17,Liver,0,3637,classical,0.997956052129253,G12V,balanced,BRCA2(g)
+COMP0186-P,44,15-oct.-18,Dead,25-juil.-19,283,40.4285714285714,no,no,NA,FFX,no,SD,4.4,45,no,Female,Asian,Not Hispanic or Latino,2018 OCT 18,Pancreas,1,232,NA,0.00068998916023967,G12V,balanced,no
+COMP0188-M,48,16-oct.-18,Dead,18-août-19,306,43.7142857142857,yes,no,NA,FFX,no,PR,-40.8,120,yes,Male,White,Not Hispanic or Latino,2018 OCT 17,Liver,0,21.2,classical,0.148842646229992,G12D,minor,no
+COMP0189-G,64,19-oct.-18,Dead,02-mars-20,500,71.4285714285714,no,no,NA,FFX,no,PR,-30,57,no,Female,White,Not Hispanic or Latino,2018 OCT 24,Pancreas,1,1396,classical,0.00504206823661972,G12D,balanced,no
+COMP0190-P,61,24-oct.-18,Alive,20-juil.-23,1730,247.142857142857,yes,yes,neo + adj CRT,FFX,no,SD,-11.1,36,yes,Male,White,Not Hispanic or Latino,2018 NOV 01,Liver,0,6744,classical,0.00288520316566203,G12R,minor,no
+COMP0191-P,64,31-oct.-18,Dead,29-sept.-19,333,47.5714285714286,yes,no,NA,FFX,no,SD,7.5,40,no,Male,White,Not Hispanic or Latino,2018 NOV 01,Pancreas,1,4290,classical,0.0113986989455619,G12R,balanced,no
+COMP0192-K,83,01-nov.-18,Dead,18-juin-19,229,32.7142857142857,yes,no,NA,GA,no,SD,-18.3,60,yes,Male,White,Not Hispanic or Latino,2018 NOV 05,Liver,1,16024,basal-like,0.565253421286637,G12V,minor,no
+COMP0193-G,68,02-nov.-18,Dead,29-mars-19,147,21,yes,no,NA,GA,no,PD,11.7,60,yes,Female,White,Not Hispanic or Latino,2018 NOV 07,Liver,0,1422,classical,0.0180904374611605,G12D,minor,no
+COMP0196-G,59,12-nov.-18,Alive,30-sept.-23,1783,254.714285714286,yes,yes,yes,FFX,no,PR,-86,50,yes,Male,White,Not Hispanic or Latino,2018 NOV 14,Liver,0,305,classical,0.0193120731269037,NA,wt,no
+COMP0197-P,65,12-nov.-18,Dead,13-déc.-19,396,56.5714285714286,yes,no,NA,FFX,no,PR,-70.6,58,yes,Male,White,Not Hispanic or Latino,2018 NOV 15,Liver,1,3733,NA,0.00936601792413209,Q61delinsHDTAGQ,balanced,no
+COMP0198-P,72,12-nov.-18,Dead,21-déc.-18,39,5.57142857142857,yes,no,NA,none,no,NE,NE,162,yes,Male,White,Not Hispanic or Latino,2018 NOV 15,Liver,1,38104,classical,0.826045278105144,G12V,minor,no
+COMP0200-M,69,16-nov.-18,Dead,14-avr.-20,515,73.5714285714286,yes,no,NA,FFX,no,SD,-24.2,161,yes,Male,White,Not Hispanic or Latino,2018 NOV 20,Liver,0,19603.1,basal-like,0.0918419772738918,G12R,minor,no
+COMP0201-P,72,21-nov.-18,Dead,11-nov.-22,1451,207.285714285714,yes,no,NA,GA,yes,CR,-100,48,yes,Male,White,Not Hispanic or Latino,2018 NOV 22,Liver,1,2984,classical,0.0595237262716665,G12D,balanced,no
+COMP0202-G,53,22-nov.-18,Dead,24-févr.-19,94,13.4285714285714,yes,no,NA,FFX,no,NE,NE,130,yes,Male,White,Not Hispanic or Latino,2018 NOV 22,Liver,1,195979,classical,0.0652164953266704,G12D,balanced,no
+COMP0203-P,71,26-nov.-18,Dead,14-févr.-19,80,11.4285714285714,yes,yes,yes,FFX,no,PD,52,44,yes,Male,White,Not Hispanic or Latino,2018 NOV 28,Liver,1,18,classical,0.00880577186601487,G12D,minor,no
+COMP0204-P,71,03-déc.-18,Dead,07-avr.-19,125,17.8571428571429,yes,no,NA,FFX,no,PD,6.6,106,yes,Male,White,Not Hispanic or Latino,2018 DEC 05,Liver,1,13244,basal-like,0.0323843932778126,G12V,balanced,no
+COMP0205-M,73,03-déc.-18,Dead,10-avr.-19,128,18.2857142857143,no,no,NA,Gemcitabine,no,NE,NE,34,no,Male,White,Not Hispanic or Latino,2018 DEC 11,Pancreas,1,2405,classical,0.0116554975985902,G12D,balanced,no
+COMP0206-P,55,03-déc.-18,Dead,23-sept.-19,294,42,yes,no,NA,GA,no,SD,-8.9,178,yes,Female,White,Not Hispanic or Latino,2018 DEC 06,Liver,1,5625,classical,0.999626280278778,Q61L,minor,yes
+COMP0207-K,60,06-déc.-18,Dead,26-oct.-19,324,46.2857142857143,yes,no,NA,GA,no,PR,-30.7,75,yes,Female,White,Not Hispanic or Latino,2018 DEC 11,Liver,1,38,classical,0.0629610359710603,G12D,minor,no
+COMP0208-G,60,03-déc.-18,Dead,19-déc.-19,381,54.4285714285714,no,no,NA,FFX,no,SD,-8,62,no,Male,Asian,Not Hispanic or Latino,2018 DEC 12,Pancreas,0,2549,classical,0.0010618767486522,G12R,minor,no
+COMP0209-G,48,17-déc.-18,Dead,22-sept.-20,645,92.1428571428571,yes,no,NA,FFX,no,PR,-72,119,yes,Female,Black or African American,Not Hispanic or Latino,2018 DEC 19,Liver,1,9650,basal-like,0.999945621416674,G12D,balanced,BRCA1(g)
+COMP0210-K,40,18-déc.-18,Dead,04-févr.-19,48,6.85714285714286,yes,no,NA,FFX,no,NE,NE,100,yes,Female,White,Not Hispanic or Latino,2018 DEC 18,Liver,1,11457,classical,0.0305462339619943,G12V,minor,no
+COMP0211-P,63,20-déc.-18,Dead,15-févr.-21,788,112.571428571429,no,no,NA,FFX,no,SD,-16.2,43,no,Female,White,Not Hispanic or Latino,2018 DEC 28,Pancreas,1,1299,classical,0.0061955839797736,G12R,balanced,no
+COMP0212-P,60,03-janv.-19,Dead,25-sept.-23,1726,246.571428571429,yes,no,NA,FFX,no,PR,-70.9,151,yes,Male,White,Not Hispanic or Latino,2019 JAN 03,Liver,1,401,classical,0.999942133908947,G12D,minor,PALB2(g)
+COMP0213-P,58,07-janv.-19,Dead,05-avr.-20,454,64.8571428571429,yes,yes,neo,FFX,no,PD,23.5,17,yes,Male,White,Not Hispanic or Latino,2019 JAN 09,Liver,1,414,classical,0.00523706868107951,G12V,minor,no
+COMP0214-P,71,07-janv.-19,Dead,03-févr.-19,27,3.85714285714286,no,no,NA,FFX,no,NE,NE,49,no,Female,White,Not Hispanic or Latino,2019 JAN 10,Pancreas,1,3,classical,0.00573197210892939,G12V,minor,no
+COMP0215-G,72,07-janv.-19,Dead,21-janv.-20,379,54.1428571428571,yes,no,NA,FFX,no,SD,1.96,102,yes,Female,White,Not Hispanic or Latino,2019 JAN 10,Liver,1,4,classical,0.0021782756924009,G12D,minor,no
+COMP0216-M,62,14-janv.-19,Dead,26-janv.-20,377,53.8571428571429,yes,yes,no,GA,no,PD,49.6,57,yes,Male,White,Not Hispanic or Latino,2019 JAN 21,Liver,0,393.3,classical,0.756096903932728,NA,wt,no
+COMP0217-G,70,14-janv.-19,Dead,30-nov.-21,1051,150.142857142857,yes,no,NA,FFX,no,PR,-36.4,33,no,Male,White,Not Hispanic or Latino,2019 JAN 16,Pancreas,1,318,classical,0.0150775800649281,G12D,balanced,no
+COMP0218-P,83,14-janv.-19,Dead,30-janv.-21,747,106.714285714286,yes,no,NA,GA,no,PR,-40,25,no,Female,White,Not Hispanic or Latino,2019 JAN 17,Pancreas,1,131,classical,0.388824569894064,G12R,balanced,no
+COMP0219-M,55,18-janv.-19,Dead,26-févr.-19,39,5.57142857142857,yes,no,NA,FFX,no,NE,NE,139,yes,Male,White,Not Hispanic or Latino,2019 JAN 22,Liver,0,60550.2,classical,0.0111003432756648,G12D,major,no
+COMP0220-G,65,25-janv.-19,Dead,24-déc.-19,333,47.5714285714286,yes,no,NA,FFX,no,PD,47.2,123,yes,Male,White,Not Hispanic or Latino,2019 JAN 30,Liver,1,2868,basal-like,0.0122593863329323,G12V,major,no
+COMP0222-P,59,30-janv.-19,Dead,23-janv.-20,358,51.1428571428571,yes,no,NA,FFX,no,SD,6.4,47,no,Female,White,Not Hispanic or Latino,2019 JAN 31,Pancreas,0,326,classical,0.007407175110914,G12V,balanced,no
+COMP0223-M,65,04-févr.-19,Dead,05-juil.-19,151,21.5714285714286,yes,no,NA,GA,no,NE,NE,54,yes,Female,White,Not Hispanic or Latino,2019 FEB 6,Liver,0,1775.5,classical,0.0138595691338283,G12D,balanced,no
+COMP0224-G,42,11-févr.-19,Alive,29-mai-23,1568,224,no,no,NA,FFX,no,SD,-20,69,no,Male,American Indian or Alaska Native,Not Hispanic or Latino,2019 FEB 13,Pancreas,0,277,NA,0.0000521282289673736,G12D,balanced,no
+COMP0226-G,57,25-févr.-19,Dead,02-août-20,524,74.8571428571429,yes,no,NA,FFX,no,PR,-32,153,yes,Female,White,Not Hispanic or Latino,2019 FEB 27,Liver,1,39215,classical,0.999970023853866,G12V,minor,no
+COMP0227-P,71,28-févr.-19,Dead,02-janv.-20,308,44,yes,yes,FFX,GA,no,SD,0,51,no,Male,White,Not Hispanic or Latino,2019 MAR 11,Pancreas,0,953,classical,0.102470939953787,G12R,balanced,no
+COMP0230-P,58,06-mars-19,Dead,20-août-20,533,76.1428571428571,Yes,no,NA,FFX,no,PR,-30,17,no,Female,White,Not Hispanic or Latino,2019 MAR 12,Lymph Node(s) Supraclav,1,389,classical,0.00180083895911674,G12V,minor,no
+COMP0231-P,84,20-mars-19,Dead,16-juil.-19,118,16.8571428571429,Yes,no,NA,GA,no,SD,-1.7,58,yes,Female,White,Not Hispanic or Latino,2019 MAR 26,Pancreas,1,271,classical,0.00000055408220491853,NA,wt,no
+COMP0232-M,70,21-mars-19,Dead,23-avr.-19,33,4.71428571428571,Yes,no,NA,Gemcitabine,no,NE,NE,89,yes,Male,White,Not Hispanic or Latino,2019 MAR 22,Liver,0,1279,basal-like,0.318880599649628,Q61R,minor,no
+COMP0233-P,46,25-mars-19,Dead,23-déc.-19,273,39,Yes,no,NA,FFX,no,PD,16.7,42,yes,Female,White,Not Hispanic or Latino,2019 MAR 27,Liver,0,971,classical,0.00835564164384865,G12D,minor,no
+COMP0234-G,64,25-mars-19,Dead,10-juin-20,443,63.2857142857143,Yes,no,NA,FFX,no,SD,-19.7,66,yes,Male,White,Not Hispanic or Latino,2019 MAR 28,Liver,0,1245,basal-like,0.104716219295273,G12D,minor,no
+COMP0235-K,75,27-mars-19,Alive,01-oct.-23,1649,235.42,Yes,no,NA,FFX,no,PR,-96,82,yes,Female,White,Not Hispanic or Latino,2019 MAR 29,Liver,0,371847,classical,0.999975770376982,G12V,balanced,BRCA2(g)
+COMP0236-P,66,04-avr.-19,Dead,05-avr.-20,367,52.4285714285714,Yes,no,NA,FFX,no,PR,-34,47,yes,Male,White,Not Hispanic or Latino,2019 APR 3,Liver,1,3127,classical,0.000329505888167993,G12V,balanced,no
+COMP0237-M,70,01-avr.-19,Dead,09-juil.-19,99,14.1428571428571,Yes,no,NA,FFX,no,PD,-26.4,68,yes,Male,White,Not Hispanic or Latino,2019 APR 9,Liver,0,272.8,classical,0.00292632520942539,G12D,minor,no
+COMP0238-P,71,03-avr.-19,Dead,21-juil.-19,109,15.5714285714286,yes,no,NA,GA,no,PD,15.4,26,no,Male,White,Not Hispanic or Latino,2019 APR 4,Pancreas,1,2446,classical,0.00445351815900838,G12D,minor,no
+COMP0239-G,59,05-avr.-19,Dead,25-juin-21,812,116,Yes,no,NA,FFX,no,PR,-74,89,yes,Male,White,Not Hispanic or Latino,2019 APR 10,Liver,0,3622,classical,0.00316154514719958,G12V,major,no
+COMP0240-G,60,05-avr.-19,Dead,31-juil.-19,117,16.7142857142857,Yes,no,NA,FFX,no,SD,-6,66,yes,Male,White,Not Hispanic or Latino,2019 APR 11,Pancreas,1,1251,classical,0.00565609300240854,G12D,balanced,no
+COMP0243-P,45,16-avr.-19,Dead,05-juil.-20,446,63.7142857142857,Yes,no,NA,FFX,no,PR,-40,131,yes,Male,Asian,Not Hispanic or Latino,2019 APR 18,Liver,1,59,classical,0.997980364590252,G12R,minor,yes
+COMP0244-P,72,23-avr.-19,Dead,12-nov.-19,203,29,Yes,no,NA,GA,no,PR,-43,160,yes,Female,White,Not Hispanic or Latino,2019 APR 25,Liver,1,67311,classical,0.000867699246865379,G12D,balanced,no
+COMP0246-G,73,29-avr.-19,Dead,18-oct.-21,903,129,Yes,no,NA,FFX,no,PR,-30.1,118,no,Male,White,Not Hispanic or Latino,2019 MAY 01,Omentum,0,13765,classical,0.999988846155231,G12S,balanced,BRCA2(g)
+COMP0248-M,70,16-mai-19,Dead,28-juil.-19,73,10.4285714285714,yes,no,NA,Gemcitabine,no,NE,NE,72,yes,Male,White,Not Hispanic or Latino,2019 MAY 27,Liver,0,1,basal-like,0.99999191753935,G12R,major,BRCA2(g)
+COMP0250-M,67,27-mai-19,Dead,08-juin-21,743,106.142857142857,no,no,NA,GA,no,SD,-13.1,76,no,Male,White,Not Hispanic or Latino,2019 MAY 28,Pancreas,0,811.8,classical,0.00577617104402174,G12D,minor,no
+COMP0251-M,71,30-mai-19,Dead,16-août-19,78,11.1428571428571,yes,no,NA,FFX,no,NE,NE,118,yes,Male,White,Not Hispanic or Latino,2019 MAY 31,Liver,0,44.5,classical,0.227388669932082,G12V,minor,no
+COMP0252-C,58,03-juin-19,Dead,12-avr.-21,679,97,no,yes,Gemcitabine,GA,no,SD,-17.1,35,no,Female,White,Not Hispanic or Latino,2019 JUN 05,Pancreas,0,29,classical,0.00209644132291279,G12D,balanced,no
+COMP0253-M,72,12-juin-19,Dead,04-oct.-19,114,16.2857142857143,yes,no,NA,GA,no,SD,3.9,76,yes,Female,White,Not Hispanic or Latino,2019 MAY 9,Liver,1,2.8,classical,0.00310388046240835,G12V,major,no
+COMP0254-G,61,12-juin-19,Dead,23-déc.-19,194,27.7142857142857,yes,yes,FFX x 4,GA,no,SD,-2.7,46,yes,Female,White,Not Hispanic or Latino,2019 JUN 12,Liver,1,24402,classical,0.00288445117770229,G12C,major,no
+COMP0256-G,61,13-juin-19,Dead,15-janv.-21,582,83.1428571428571,yes,yes,gem/cap,FFX,no,PR,-48.5,33,yes,Male,White,Not Hispanic or Latino,2019 JUN 13,Liver,0,5416,classical,0.0202313322956748,G12D,minor,no
+COMP0257-P,65,13-juin-19,Dead,03-févr.-21,601,85.8571428571429,yes,no,NA,FFX,no,SD,0,32,yes,Female,White,Not Hispanic or Latino,2019 JUN 13,Liver,1,90,classical,0.00252939588234908,G12V,major,no
+COMP0258-G,52,14-juin-19,Dead,20-mars-20,280,40,yes,no,NA,FFX,no,SD,-2,167,yes,Male,White,Not Hispanic or Latino,2019 JUN 19,Liver,0,48952,classical,0.0309211826952175,G12C,balanced,no
+COMP0259-M,72,20-juin-19,Dead,12-juil.-19,22,3.14285714285714,yes,no,NA,None,no,NE,NE,125,yes,Female,White,Not Hispanic or Latino,2019 MAY 31,Liver,0,6836,basal-like,0.0124281120974998,G12V,minor,no
+COMP0260-P,57,24-juin-19,Dead,15-juil.-19,21,3,yes,no,NA,FFX,no,NE,NE,132,yes,Male,Asian,Not Hispanic or Latino,2019 JUN 26,Liver,1,66283,basal-like,0.999826930739092,G12V,minor,BRCA2(g)
+COMP0261-P,61,24-juin-19,Dead,06-janv.-21,562,80.2857142857143,yes,no,NA,FFX,no,PR,-59,101,yes,Male,White,Not Hispanic or Latino,2019 JUN 27,Liver,1,5775,classical,0.999973314966843,G12D,minor,yes
+COMP0262-G,75,26-juin-19,Dead,12-avr.-20,291,41.5714285714286,yes,no,NA,GA,no,SD,-28.5,77,yes,Male,White,Not Hispanic or Latino,2019 JUN 27,Liver,1,239902,classical,0.025033912263036,G12V,balanced,no
+COMP0263-G,63,28-juin-19,Dead,06-sept.-21,801,114.428571428571,yes,yes,cis/gem + chemorads,FFX,no,PR,-82,27,yes,Male,White,Not Hispanic or Latino,2019 JUL 3,Liver,1,465,classical,0.175495189911387,G12D,balanced,no
+COMP0264-C,68,04-juil.-19,Dead,31-janv.-20,211,30.1428571428571,yes,no,no,GA,no,SD,2.5,81,no,Male,White,Not Hispanic or Latino,2019 JUL 5,Liver,1,23,basal-like,0.648645310842194,G12V,major,no
+COMP0265-G,67,08-juil.-19,Dead,08-oct.-19,92,13.1428571428571,yes,no,NA,FFX,no,PD,26.5,49,yes,Female,White,Not Hispanic or Latino,2019 JUL 12,Liver,1,509,basal-like,0.0929428872198348,G12D,major,no
+COMP0266-P,61,08-juil.-19,Dead,23-janv.-20,199,28.4285714285714,yes,no,NA,FFX,no,PD,23,117,yes,Male,White,Not Hispanic or Latino,2019 JUL 11,Liver,0,109433,classical,0.022769424741222,G12D,minor,no
+COMP0267-G,49,08-juil.-19,Dead,06-oct.-19,90,12.8571428571429,yes,no,NA,FFX,no,PD,27,100,yes,Male,White,Not Hispanic or Latino,2019 JUL 07,Liver,0,missing,classical,0.0147853113301533,G12D,minor,no
+COMP0268-M,64,10-juil.-19,Alive,30-sept.-23,1543,220.428571428571,yes,no,NA,FFX,no,SD,-25,80,no,Male,White,Not Hispanic or Latino,2019 JUL 16,Peritoneum,0,10355,classical,0.99999971033435,G12D,minor,BRCA1(g)
+COMP0270-G,65,12-juil.-19,Dead,15-juin-20,339,48.4285714285714,yes,no,NA,FFX,no,PR,-74.7,83,yes,Female,White,Not Hispanic or Latino,2019 JUL 18,Liver,1,3917,classical,0.00427172948749015,G12D,balanced,no
+COMP0271-P,77,16-juil.-19,Dead,14-août-20,395,56.4285714285714,no,no,NA,GA,no,SD,-18.6,43,no,Male,White,Not Hispanic or Latino,2019 JUL 19,Pancreas,1,32,classical,0.0189312055988492,G12V,balanced,no
+COMP0272-P,56,23-juil.-19,Dead,26-janv.-21,553,79,yes,no,NA,FFX,no,PR,-58,50,yes,Female,White,Not Hispanic or Latino,2019 JUL 24,Ovary,1,1267,classical,0.508329191898465,G12R,minor,no
+COMP0273-P,63,23-juil.-19,Dead,12-nov.-19,112,16,yes,no,NA,GA,no,NE,NE,252,yes,Male,Asian,Not Hispanic or Latino,2019 JUL 24,Liver,2,70581,NA,0.0523932629820233,G12R,minor,no
+COMP0275-P,77,25-juil.-19,Dead,02-févr.-20,192,27.4285714285714,yes,no,NA,GA,no,SD,-12,83,yes,Male,White,Not Hispanic or Latino,2019 AUG 1,Liver,1,1687,basal-like,0.00218939087469073,Q61H,major,no
+COMP0276-P,60,26-juil.-19,Dead,27-déc.-20,520,74.2857142857143,yes,no,NA,FFX,no,SD,-5.8,86,yes,Male,White,Hispanic or Latino,2019 AUG 2,Liver,0,1028,classical,0.0000453731661162675,G12V,balanced,no
+COMP0279-P,66,02-août-19,Dead,11-juil.-20,344,49.1428571428571,no,no,NA,GA,no,SD,-12.5,24,no,Male,White,Hispanic or Latino,2019 AUG 06,Pancreas,1,84,classical,0.982758652462786,G12V,minor,no
+COMP0280-P,67,02-août-19,Dead,24-janv.-20,175,25,yes,no,NA,FFX,no,SD,-16.5,109,yes,Male,White,Not Hispanic or Latino,2019 AUG 7,Liver,1,15,classical,0.0244088788160502,G12D,major,no
+COMP0281-M,72,02-août-19,Dead,23-févr.-20,205,29.2857142857143,yes,no,NA,GA,no,PD,10.1,67,yes,Male,White,Not Hispanic or Latino,2019 AUG 7,Liver,0,169.9,basal-like,0.0049620571272114,G12D,minor,no
+COMP0282-P,58,09-août-19,Dead,01-sept.-20,389,55.5714285714286,yes,no,NA,FFX,no,SD,-15.3,85,yes,Female,Asian,Not Hispanic or Latino,2019 AUG 14,Pancreas,1,3540,classical,0.0845707728494845,G12V,balanced,no
+COMP0283-K,69,13-août-19,Dead,01-août-20,354,50.5714285714286,yes,no,NA,GA,no,SD,-26.7,60,no,Male,White,Not Hispanic or Latino,2019 AUG 13,Peritoneum,1,432,classical,0.00106755111189514,Q61H,major,no
+COMP0285-P,56,19-août-19,Dead,12-juin-20,298,42.5714285714286,yes,no,NA,FFX,no,PD,18.3,114,yes,Female,Black or African American,Not Hispanic or Latino,2019 AUG 22,Liver,1,23234,basal-like,0.998732883107918,G12D,minor,BRCA2(g)
+COMP0286-P,62,21-août-19,Dead,28-nov.-19,99,14.1428571428571,yes,yes,Yes,GA,no,PD,60.8,51,no,Female,Asian,Not Hispanic or Latino,2019 AUG 22,Peritoneum,1,<1,basal-like,0.0111501501042781,Q61H,minor,no
+COMP0288-P,58,13-sept.-19,Dead,27-nov.-20,441,63,yes,no,no,FFX,no,PR,-34,70,yes,Female,Unknown,Hispanic or Latino,2019 SEP 18,Liver,1,4105,classical,0.0298376937468807,Q61H,minor,no
+COMP0290-P,73,23-sept.-19,Dead,11-août-20,323,46.1428571428571,yes,no,no,FFX,no,SD,18,50,no,Female,Asian,Not Hispanic or Latino,2019 SEP 26,Pancreas,1,4924,classical,0.00736966667041891,G12D,balanced,no
+COMP0291-P,70,30-sept.-19,Dead,15-août-20,320,45.7142857142857,yes,no,no,FFX,no,SD,-6.8,141,no,Male,White,Not Hispanic or Latino,2019 OCT 2,Pancreas,1,251,classical,0.00757856135864931,G12R,balanced,no
+COMP0292-C,56,17-oct.-19,Dead,16-août-21,669,95.5714285714286,yes,no,no,GA,no,PR,-51.2,168,no,Female,White,Not Hispanic or Latino,2019 OCT 21,Liver,0,20430,classical,0.0000480629638801984,G12V,minor,no
+COMP0295-C,66,25-oct.-19,Dead,29-mai-20,217,31,yes,no,no,GA,no,PR,-39.4,99,yes,Female,White,Not Hispanic or Latino,2019 OCT 28,Liver,0,3007,classical,0.00469296496705192,G12R,balanced,no
+COMP0296-P,61,28-oct.-19,Dead,23-nov.-20,392,56,yes,no,no,GA,no,PR,-41.8,165,yes,Male,White,Not Hispanic or Latino,2019 OCT 30,Liver,0,10,classical,0.0124133868522254,G12V,major,no
+COMP0300-K,55,08-nov.-19,Dead,27-mars-20,140,20,yes,no,no,FFX,no,PD,55.4,260,yes,Female,White,Not Hispanic or Latino,2019 NOV 13,Liver,1,1003,classical,0.064376194961805,G12D,major,no
+COMP0301-P,65,08-nov.-19,Dead,09-oct.-20,336,48,yes,no,no,GA,yes,PR,-58,12,yes,Male,White,Not Hispanic or Latino,2019 NOV 14,Pancreas,0,28,classical,0.00184780869561442,G12D,major,no
+COMP0303-P,70,20-nov.-19,Dead,05-janv.-21,412,58.8571428571429,yes,no,no,FFX,no,PR,-34,150,no,Male,White,Not Hispanic or Latino,2019 NOV 21,Abdominal wall,0,9270,NA,0.0211339172618796,G12V,minor,no
+COMP0304-M,54,13-déc.-19,Dead,16-févr.-20,65,9.28571428571429,no,no,no,GA,no,PD,15.8,38,no,Male,White,Not Hispanic or Latino,2019 DEC 30,Pancreas,1,30127,classical,0.00847918689615264,G12V,minor,no
+COMP0306-M,68,23-déc.-19,Dead,29-juin-20,189,27,yes,no,no,FFX,no,PD,37.5,104,yes,Male,White,Not Hispanic or Latino,2020 JAN 7,Liver,0,49999.3,basal-like,0.126895332617758,G12D,minor,no
+COMP0307-M,71,03-janv.-20,Dead,05-mai-20,123,17.5714285714286,yes,no,no,FFX,no,NE,NE,86,yes,Female,White,Not Hispanic or Latino,2020 JAN 6,Liver,0,11927.5,classical,0.00544632794916338,G12R,major,no
+COMP0309-M,53,13-janv.-20,Dead,02-août-20,202,28.8571428571429,yes,no,no,FFX,no,PD,42.3,78,yes,Female,White,Not Hispanic or Latino,2020 JAN 16,Liver,0,3703,basal-like,0.00164629100933836,NA,wt,no
+COMP0310-P,73,13-janv.-20,Dead,20-juil.-21,554,79.1428571428571,yes,no,no,FFX+olaparib,no,PR,-72,88,yes,Female,White,Not Hispanic or Latino,2020 JAN 15,Liver,1,3381,classical,0.999961476486271,G12V,minor,BRCA2(g)
+COMP0311-P,55,13-janv.-20,Dead,18-août-20,218,31.1428571428571,yes,no,no,FFX,no,PR,-31,133,yes,Male,Asian,Not Hispanic or Latino,2020 JAN 16,Liver,1,86539,classical,0.0201247955802779,G12D,balanced,no
+COMP0312-P,78,24-janv.-20,Dead,22-mars-21,423,60.4285714285714,yes,no,no,FFX,no,SD,-12,51,no,Male,White,Not Hispanic or Latino,2020 JAN 28,Lung,0,1,classical,0.00539434001802026,G12D,balanced,no
+COMP0313-P,58,27-janv.-20,Alive,01-sept.-23,1313,187.571428571429,yes,no,no,FFX,no,SD,5,77,no,Male,White,Not Hispanic or Latino,2020 JAN 30,Peritoneum,1,172,classical,0.00000051384608245513,G12D,balanced,no
+COMP0315-K,70,28-janv.-20,Dead,30-avr.-20,93,13.2857142857143,yes,no,no,none,no,NE,NE,missing,,Male,White,Not Hispanic or Latino,2020 JAN 29,Liver,0,16956,classical,0.020340321058614,G12V,balanced,no
+COMP0316-M,74,31-janv.-20,Dead,21-mars-20,50,7.14285714285714,yes,no,no,FFX,no,NE,NE,112,yes,Male,White,Hispanic or Latino,2020 FEB 4,Liver,0,2551,classical,0.0663996413416279,G12D,minor,no
+COMP0317-K,60,04-févr.-20,Dead,07-févr.-21,369,52.7142857142857,yes,no,no,FFX,no,PD,7,136,yes,Male,White,Not Hispanic or Latino,2020 FEB 07,Liver,1,6577,classical,0.00066068302403791,G12R,balanced,no
+COMP0318-P,75,10-févr.-20,Dead,22-juin-21,498,71.1428571428571,no,no,no,FFX,no,missing,missing,30,no,Female,White,Not Hispanic or Latino,2020 FEB 13,Pancreas,0,206,classical,0.0198887470429404,G12D,balanced,no
+COMP0320-C,64,11-févr.-20,Dead,23-nov.-20,286,40.8571428571429,yes,no,no,GA,no,PD,10,45,no,Male,White,Not Hispanic or Latino,2020 FEB 12,Pancreas,0,93,basal-like,0.0000111572274904046,G12D,balanced,no
+COMP0321-P,65,14-févr.-20,Dead,13-avr.-21,424,60.5714285714286,yes,no,no,FFX,no,SD,-10,69,yes,Male,White,Not Hispanic or Latino,2020 FEB 2,Peritoneum,0,183,NA,NA,G12D,balanced,no
+COMP0323-P,57,14-févr.-20,Dead,20-sept.-21,584,83.4285714285714,yes,planned,neoFFX,GA,no,SD,0,46,yes,Male,White,Not Hispanic or Latino,2020 FEB 20,Liver   ,0,2766,NA,0.00035813218132286,NA,wt,no
+COMP0324-K,62,21-févr.-20,Dead,12-juil.-20,142,20.2857142857143,yes,no,no,FFX,no,NE,NE,69,yes,Male,White,Not Hispanic or Latino,2020 FEB 27,Liver,0,3573,classical,0.999855898529694,NA,wt,BRCA2(g)
+COMP0325-K,57,27-févr.-20,Dead,20-mai-20,83,11.86,yes,no,no,FFX,no,PD,3.6,82,yes,Male,White,Not Hispanic or Latino,2020 MAR 06,Liver,1,163010,classical,NA,G12V,major,no
+COMP0326-M,68,28-févr.-20,Dead,13-déc.-20,289,41.2857142857143,yes,no,no,GA,no,PR,-59.8,82,no,Female,Asian,Not Hispanic or Latino,2020 MAR 13,Pancreas,0,2673,classical,NA,G12D,balanced,no
+COMP0328-P,64,06-mars-20,Dead,03-déc.-20,272,38.8571428571429,no,no,no,GA,no,SD,-9,44,no,Female,White,Not Hispanic or Latino,2020 MAR 11,Pancreas,1,986,classical,0.0502159360572163,G12D,balanced,no
+COMP0329-P,79,06-mars-20,Alive,01-oct.-21,574,82,no,no,no,GA,no,SD,-10,51,no,Male,White,Not Hispanic or Latino,2020 MAR 12,Pancreas,1,44,classical,NA,Q61H,minor,no
+COMP0330-C,71,12-mars-20,Dead,10-mars-21,363,51.8571428571429,no,no,no,GA,no,PR,-55.8,34,no,Female,White,Not Hispanic or Latino,2020 MAR 16,Pancreas,0,1967,classical,NA,G12D,balanced,no
+COMP0331-P,54,03-juin-20,Dead,25-sept.-22,844,120.571428571429,no,no,no,FFX,no,SD,-21,33,no,Male,White,Not Hispanic or Latino,2020 JUN 03,Pancreas,0,2,classical,NA,G12V,balanced,no
+COMP0332-NS,66,06-août-20,Dead,25-mai-21,292,41.7142857142857,yes,no,no,FFX,no,SD,-21.2,202,yes,Male,Black or African American,Not Hispanic or Latino,2020 AUG 07,Liver,0,120 000,classical,NA,G12D,minor,no
